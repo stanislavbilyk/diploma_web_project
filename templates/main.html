@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Main page
+{% endblock %}
+
+{% block main %}
+    
+<div class="top_market">
+    <div class="div1"><a href="{% url 'product_id' pk=iPhone16.pk %}"><img src="{% static 'img/Banner_iPhone16Pro.jpg' %}" alt="Admin"></a></div>
+    <div class="div6"> 
+        <div class="div7">
+            <div class="div2"><a href="{% url 'product_id' pk=Playstation5.pk %}"><img src="{% static 'img/Banner_Playstation5.jpg' %}" alt="Admin"></a></div>
+            <div class="div8">
+                <div class="div3"><a href="{% url 'product_id' pk=AirPodsMax.pk %}"><img src="{% static 'img/Banner_AirPodsMax.jpg' %}" alt="Admin"></a></div>
+                <div class="div4"><a href="{% url 'product_id' pk=AppleVisionPro.pk %}"><img src="{% static 'img/Banner_AppleVisionPro.jpg' %}" alt="Admin"></a></div>
+            </div>    
+        </div>    
+        <div class="div5"><a href="{% url 'product_id' pk=MacbookAir.pk %}"><img src="{% static 'img/Banner_MacbookAir.jpg' %}" alt="Admin"></a></div>
+    </div>
+</div>
+    
+<div class="Categories_section">  
+    <div class="Title_of_Categories">
+        <h1 class="Items">Browse By Category</h1>
+        <div class="Arrows">
+            <span class="Arrow left">&lsaquo;</span>
+            <span class="Arrow right">&rsaquo;</span>
+        </div>
+    </div>
+    <div class="Categories_container">
+        <div class="Categories_wrapper">    
+            <div class="List_of_categories">
+                {% for category in category_list %}
+                    <a href="{% url 'category_id' category.pk %}">
+                        <div class="Block_of_category">
+                            <ul class="Category">
+                                <li class="Img_of_category"><img src="{{ category.image.url }}" alt="{{ category.name }}"></li>
+                                <li class="Name_of_category">{{ category.name }}</li>
+                            </ul>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div> 
+        </div>
+    </div>
+</div>
+    
+<div class="CarouselContainer">
+    <div class="CarouselWrapper">
+        <div class="Carousel">
+            <a href="{% url 'product_id' pk=iPhone16.pk %}"><img src="{% static 'img/iPhone16.jpg' %}" alt="iPhone16"></a>
+            <a href="{% url 'product_id' pk=AppleWatch10.pk %}"><img src="{% static 'img/AppleWatch10.jpg' %}" alt="AppleWatch10"></a>
+            <a href="{% url 'product_id' pk=MacbookPro.pk %}"><img src="{% static 'img/MacbookPro.jpg' %}" alt="MacbookPro"></a>
+            <a href="{% url 'product_id' pk=AirPodsMax.pk %}"><img src="{% static 'img/AirPodsMax.jpg' %}" alt="AirPodsMax"></a>
+            <a href="{% url 'product_id' pk=iPadPro.pk %}"><img src="{% static 'img/iPadPro.jpg' %}" alt="iPadPro"></a>
+        </div>
+    </div>
+</div>
+    
+<div class="Our_items">
+    <ul class="List_of_products">
+    {% for product in product_list %}
+        <li>            
+            <ul class="Card_of_product">                
+                <li class="Wishlist">
+                    <div class="Wishlist_Container" data-product-id="{{ product.pk }}" data-in-wishlist="{% if product.pk in wishlist_items %}true{% else %}false{% endif %}">
+                        <img src="{% static 'img/Like.png' %}" alt="wishlist" class="Wishlist_Icon default {% if product.pk in wishlist_items %}hidden{% endif %}">
+                        <img src="{% static 'img/RedLike.png' %}" alt="wishlist" class="Wishlist_Icon active {% if product.pk not in wishlist_items %}hidden{% endif %}">
+                    </div>
+                </li>
+
+
+                <a href="{% url 'product_id' product.pk %}" style="text-decoration: none; color: inherit">
+                <li class="Image_of_item"><img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px; max-height: 160px"></li><br>
+                <li class="Name_of_item">{{ product.name }}</li><br>
+                <li>
+                    <ul class="Price_section">
+                        <li class="Price">{{ product.price }}</li>
+                        <li class="Currency">CZK</li>
+                    </ul>
+                </li>
+                </a>    
+                {% if user.is_authenticated %}
+                <li class="Purchase_section">
+                    <input type="hidden" name="product_id" value="{{ product.pk }}">
+                    <button class="Add_to_card" data-product-id="{{ product.id }}">Buy Now</button>                           
+                </li>            
+                {% endif %}
+            </ul>            
+        </li>
+    {% endfor %}
+    </ul>
+
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>    
+    
+<div class="Section_of_market">
+    <ul class="List_of_market">
+        <li>
+            <ul class="Market Popular_product">
+                <li class="Market_image"><img src="{% static 'img/Popular_products.png' %}" alt="Popular_products"></li>
+                <li class="Market_tittle">Popular product</li>
+                <li class="Market_description">Discover our most popular product, loved by thousands! With cutting-edge technology, sleek design, and unmatched performance, it’s the perfect choice for those who want the best. Don’t miss out—experience innovation today!</li>
+                <a href="{% url 'popular_products' %}">
+                    <li class="Market_purchase_section">                    
+                        <button class="Shop_now">Shop Now</button>                           
+                    </li>
+                </a>    
+            </ul></li>
+        <li>
+            <ul class="Market iPad_Pro">
+                <li class="Market_image"><img src="{% static 'img/iPad_Pro.png' %}" alt="iPad_Pro"></li>
+                <li class="Market_tittle">iPad Pro</li>
+                <li class="Market_description">Unleash your creativity with the all-new iPad Pro! Designed for power and portability, it delivers stunning visuals, pro-level performance, and endless possibilities. Work, play, and create like never before!</li>
+                <a href="{% url 'product_id' pk=iPadPro.pk %}">
+                    <li class="Market_purchase_section">                    
+                        <button class="Shop_now">Shop Now</button>                           
+                    </li>
+                </a>
+            </ul></li>
+        <li>
+            <ul class="Market Samsung_Galaxy">
+                <li class="Market_image"><img src="{% static 'img/Samsung_Galaxy.png' %}" alt="Samsung_Galaxy"></li>
+                <li class="Market_tittle">Samsung Galaxy</li>
+                <li class="Market_description">Experience the future of mobile technology with Samsung Galaxy. Stunning display, lightning-fast speed, and intelligent features redefine what a smartphone can do. Elevate your everyday with the best in class!</li>
+                <a href="{% url 'product_id' pk=SamsungGalaxy.pk %}">
+                    <li class="Market_purchase_section">                    
+                        <button class="Shop_now">Shop Now</button>                           
+                    </li>
+                </a>
+            </ul></li>
+        <li>
+            <ul class="Market Macbook_Pro">
+                <li class="Market_image"><img src="{% static 'img/Macbook_Pro.png' %}" alt="Macbook_Pro"></li>
+                <li class="Market_tittle">Makbook Pro</li>
+                <li class="Market_description">Power meets elegance in the MacBook Pro. Whether you’re a professional or a creative mind, this laptop delivers next-level performance, incredible battery life, and a breathtaking display. Work smarter, faster, and better!</li>
+                <a href="{% url 'product_id' pk=MacbookPro.pk %}">
+                    <li class="Market_purchase_section">                    
+                        <button class="Shop_now">Shop Now</button>                           
+                    </li>
+                </a>
+            </ul></li>
+    </ul>
+</div>
+
+<div class="Discounts_section">
+<h2>Discounts up to -50%</h2>
+    <ul class="List_of_discounts">
+    {% for product in discounted_products %}
+        <li>            
+            <ul class="Card_of_product">                
+                <li class="Wishlist">
+                    <div class="Wishlist_Container" data-product-id="{{ product.pk }}">
+                        <img src="{% static 'img/Like.png' %}" alt="wishlist" class="Wishlist_Icon default">
+                        <img src="{% static 'img/RedLike.png' %}" alt="wishlist" class="Wishlist_Icon active">
+                    </div>
+                </li>
+                <a href="{% url 'product_id' product.pk %}" style="text-decoration: none; color: inherit">
+                <li class="Image_of_item"><img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px"></li><br>
+                <li class="Name_of_item">{{ product.name }}</li><br>
+                <li>
+                    <ul class="Price_section Old_price">
+                        <li class="Price">{{ product.price }}</li>                            
+                    </ul>
+                </li>
+                <li>
+                    <ul class="Discount_price_section">
+                        <li class="Price">{{ product.discount_price }}</li>
+                        <li class="Currency">CZK</li>
+                    </ul>
+                </li>    
+                </a>    
+                {% if user.is_authenticated %}
+                <li class="Purchase_section">
+                    <input type="hidden" name="product_id" value="{{ product.pk }}">
+                    <button class="Add_to_card" data-product-id="{{ product.id }}">Buy Now</button>                           
+                </li>            
+                {% endif %}
+            </ul>            
+        </li>
+    {% empty %}
+        <p>No discounted products</p>
+    {% endfor %}
+    </ul>
+</div>
+    
+<div class="pagination">
+        {% if discount_page_obj.has_previous %}
+            <a href="?discount_page=1#Discounts_section">First</a>
+            <a href="?discount_page={{ discount_page_obj.previous_page_number }}#Discounts_section">Previous</a>
+        {% endif %}
+
+        <span>Page {{ discount_page_obj.number }} of {{ discount_page_obj.paginator.num_pages }}</span>
+
+        {% if discount_page_obj.has_next %}
+            <a href="?discount_page={{ discount_page_obj.next_page_number }}#Discounts_section">Next</a>
+            <a href="?discount_page={{ discount_page_obj.paginator.num_pages }}#Discounts_section">Last</a>
+        {% endif %}
+    </div>
+</div> 
+    
+<div class="Big_Summer_Sale">
+    <div class="Img_Summer_Sale">
+        <img src="{% static 'img/BigSummerSale.jpg' %}" alt="SummerSale">
+    </div>
+    <a href="{% url 'summer_sale' %}">
+        <button class="Shop_now">Shop Now</button>       
+    </a>
+</div>
+    
+
+<script src="{% static 'js/slider.js' %}"></script>
+<script src="{% static 'js/carousel.js' %}"></script>
+<script src="{% static 'js/wishlist.js' %}?v={{ STATIC_VERSION }}"></script>
+<script src="{% static 'js/anchor.js' %}"></script>     
+    
+{% endblock %}
+
+
+

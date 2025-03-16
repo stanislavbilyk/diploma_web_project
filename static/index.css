@@ -1,0 +1,554 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+    width: 100vw;
+    margin: 0;
+    background-color: white;
+    overflow-x: hidden;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    padding: 35px;
+    box-sizing: border-box;
+    gap: 15px;
+    height: 88px;
+    align-content: center;
+}
+
+header a,
+header form {
+    display: flex;
+    align-items: center; /* Центрирование содержимого ссылок и формы */
+}
+
+a {
+    text-decoration: none; /* Убирает подчеркивание */
+    color: black; /* Делает текст черным */
+}
+
+header a {
+    color: grey;
+    transition: color 0.3s ease;
+}
+
+header a:hover {
+    color: black;
+    font-weight: bold;
+}
+
+.top_market {
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap; /* Если нужно переносить на новую строку */
+    /*gap: 0; !* Убираем зазоры *!*/
+}
+
+.top_market img {
+    display: block; /* Убирает встроенные отступы у изображений */
+    width: 100%; /* Можно настроить размеры, если нужно */
+    height: auto;
+}
+
+.div6 {
+    display: flex;
+    justify-content: center;
+}
+
+.div8 {
+    display: flex;
+    justify-content: center;
+}
+
+.Categories_section {
+    width: 1150px;
+    margin: 80px auto;
+    max-width: 1200px;
+}
+
+.Title_of_Categories {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.Categories_container {
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+}
+
+.Categories_wrapper {
+    display: flex;
+    gap: 32px;
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+}
+
+.List_of_categories {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 32px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.List_of_categories a:hover {
+    color: blue;
+}
+
+.Block_of_category {
+    display: flex;
+    flex-direction: column;
+    width: 160px;
+    height: 128px;
+    gap: 32px;
+    border-radius: 15px;
+    background-color: rgba(237, 237, 237, 1);
+}
+
+.Category {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.Category_item {
+    flex: 0 0 calc(100% / 4); /* Показываем 4 категории на экране */
+}
+
+.Items {
+    width: 100%;
+    display: flex;
+}
+
+.Img_of_category {
+    mix-blend-mode: multiply;
+}
+
+.Arrows {
+    display: flex;
+    gap: 15px;
+    font-size: 25px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Arrow {
+    padding: 5px 10px;
+    background: #eee;
+    border-radius: 50%;
+}
+
+.Arrow:hover {
+    background: #ccc;
+}
+
+.CarouselContainer {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.CarouselWrapper {
+    width: 100vw; /* Ограничение по ширине */
+    overflow: hidden;
+    position: relative;
+}
+
+.Carousel {
+    display: flex;
+    gap: 16px; /* Вернули отступы между картинками */
+    transition: transform 0.5s ease-in-out;
+    will-change: transform; /* Улучшает плавность анимации */
+    align-items: center;
+}
+
+.Carousel a img {
+    width: 80vw; /* Боковые картинки меньше */
+    max-width: 800px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+    /*opacity: 0.5; !* Боковые картинки полупрозрачные *!*/
+    transition: all 0.5s ease-in-out;
+}
+
+/* Затемняем боковые картинки */
+.Carousel a:not(.active) img {
+    opacity: 0.5;
+    transform: scale(0.85); /* Уменьшаем соседние изображения */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.Carousel a.active img {
+    opacity: 1;
+    transform: scale(1); /* Центральное изображение увеличено */
+}
+
+
+.Our_items {
+    width: 100%;
+    margin: 20px;
+    flex-grow: 1;
+}
+
+.List_of_products {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 240px);
+    gap: 50px;
+    justify-content: center;
+}
+
+.List_of_products_page {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(3, 270px);
+    gap: 50px;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.Card_of_product {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем элементы по горизонтали */
+    justify-content: center;
+    position: relative;
+    background-color: rgba(246, 246, 246, 1);
+    padding: 20px;
+    width: 100%; /* Растягиваем карточку */
+    text-align: center; /* Центрируем текст */
+    padding-top: 60px;
+    border-radius: 9px;
+}
+
+/*.Card_of_product li {*/
+/*    width: 100%; !* Растягиваем элементы *!*/
+/*    display: block; !* Превращаем в блочные элементы *!*/
+/*    text-align: center; !* Выравниваем текст *!*/
+/*}*/
+
+.Wishlist {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    left: auto;
+}
+
+.Wishlist_Container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; /* Увеличиваем зону клика */
+    height: 50px;
+    cursor: pointer;
+    padding-top: 10px;
+}
+
+.Wishlist_Icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Серое сердечко (по умолчанию) */
+.Wishlist_Icon.default {
+    opacity: 1;
+    color: gray; /* Добавь цвет для серого */
+}
+
+/* Красное сердечко (избранное) */
+.Wishlist_Icon.active {
+    opacity: 0; /* По умолчанию скрыто */
+    color: red;
+}
+
+/* Если товар в избранном, скрываем серое и показываем красное */
+.Wishlist_Container.active .Wishlist_Icon.default {
+    opacity: 0;
+}
+
+.Wishlist_Container.active .Wishlist_Icon.active {
+    opacity: 1;
+}
+
+.Image_of_item {
+    mix-blend-mode: multiply;
+}
+
+.Name_of_item {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.Price_section {
+    list-style-type: none;
+    display: flex;
+    justify-content: center; /* Центрируем цену и валюту */
+    align-items: center;
+    gap: 5px;
+    width: auto;
+}
+
+.Price {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.Currency {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.Add_to_card {
+    width: 188px;
+    height: 48px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    background-color: #ff7b00;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Add_to_card:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: #ff7b00; /* Оранжевый текст */
+    transform: scale(1.05); /* Немного увеличиваем кнопку */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Усиливаем тень */
+}
+
+.Add_to_card:active {
+    transform: scale(0.95); /* Легкое уменьшение при нажатии */
+}
+
+.Buy {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.Section_of_market {
+    display: flex;
+    width: 100%;
+}
+
+.List_of_market {
+    display: flex;
+    width: 100%;
+    list-style-type: none;
+}
+
+.Market {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 640px;
+    list-style-type: none;
+    align-items: center;
+}
+
+.Market_image {
+    width: 360px;
+    height: 360px;
+}
+
+.Market_tittle {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.Market_description {
+    padding: 20px;
+}
+
+.iPad_Pro {
+    background-color: rgba(249, 249, 249, 1);
+}
+
+.Samsung_Galaxy {
+    background-color: rgba(234, 234, 234, 1);
+}
+
+.Macbook_Pro {
+    background-color: rgba(44, 44, 44, 1);
+    color: white;
+}
+
+.Shop_now {
+    width: 191px;
+    height: 56px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bolder;
+    font-size: 16px;
+    color: black;
+    background-color: #ff7b00;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Shop_now:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: #ff7b00; /* Оранжевый текст */
+    transform: scale(1.05); /* Немного увеличиваем кнопку */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Усиливаем тень */
+}
+
+.Shop_now:active {
+    transform: scale(0.95); /* Легкое уменьшение при нажатии */
+}
+
+.Macbook_Pro .Market_purchase_section .Shop_now {
+    color: white;
+    background-color: #ff7b00;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Macbook_Pro .Shop_now:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: #ff7b00; /* Оранжевый текст */
+    transform: scale(1.05); /* Немного увеличиваем кнопку */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Усиливаем тень */
+}
+
+.Macbook_Pro .Shop_now:active {
+    transform: scale(0.95); /* Легкое уменьшение при нажатии */
+}
+
+.Discounts_section {
+    width: 100%;
+    margin: 20px;
+}
+
+.List_of_discounts {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 240px);
+    gap: 50px;
+    justify-content: center;
+}
+
+.Discount_price_section {
+    list-style-type: none;
+    display: flex;
+    justify-content: center; /* Центрируем цену и валюту */
+    align-items: center;
+    gap: 5px;
+    width: auto;
+}
+
+.Old_price .Price {
+    text-decoration: line-through;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end; /* Выравнивание вправо */
+    gap: 10px; /* Отступы между элементами */
+    margin-right: 70px;
+}
+
+.Big_Summer_Sale {
+    width: 100%;
+}
+
+.Big_Summer_Sale a {
+    position: relative;
+}
+
+.Big_Summer_Sale a .Shop_now {
+    color: white;
+    background-color: #ff7b00;
+    border: none;
+    border-radius: 6px;
+    /*border: 2px solid white;*/
+    cursor: pointer;
+    position: absolute;
+    top: 50%;   /* Центрируем кнопку по вертикали */
+    left: 50%;  /* Центрируем кнопку по горизонтали */
+    transform: translate(340%, -280%); /* Смещаем кнопку на 50% от её ширины и высоты */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Big_Summer_Sale a .Shop_now:hover {
+    background-color: white; /* Белый фон при наведении */
+    color: #ff7b00; /* Оранжевый текст */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Усиливаем тень */
+}
+
+.foot_section {
+    width: 100%;
+    display: flex;
+    background-color: black;
+    color: white;
+    padding: 50px;
+    gap: 100px;
+}
+
+.AboutUs, .Services, .BuyerAssistance {
+    flex: 1;  /* Разделяет доступное пространство */
+}
+
+.AboutUs {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.Media {
+    list-style-type: none;
+    display: flex;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.Services {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+}
+
+.Title_footer {
+    font-weight: bold;
+    font-size: 20px;
+
+}
+
+.BuyerAssistance {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+}

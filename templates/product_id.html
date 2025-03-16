@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Product's page
+{% endblock %}
+
+{% block main %}
+
+<nav class="breadcrumbs">
+    {% for category in breadcrumbs %}
+        <a href="{% url 'category_id' category.pk %}">{{ category.name }}</a> <span>&rsaquo;</span>        
+        {% if not forloop.last %} > {% endif %}
+    {% endfor %}
+    {% if brand %}
+        <a href="{% url 'brand_id' brand.pk %}">{{ brand.name }}</a> <span>&rsaquo;</span> 
+    {% endif %}
+    <a href="{% url 'product_id' product.pk %}">{{ product.name }}</a>
+</nav>    
+
+<h1>{{ product.name }}</h1> <br>
+ <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 600px"> <br>
+ {{ product.description }} <br>
+    {% if product.discount_price %}
+        <ul class="Price_section Old_price">
+            <li class="Price">{{ product.price }}</li>                            
+        </ul>                
+        <ul class="Discount_price_section">
+            <li class="Price">{{ product.discount_price }}</li>
+            <li class="Currency">CZK</li>
+        </ul>   
+    {% else %}        
+        <p>Price  {{ product.price }}</p>
+        <p>In stock  {{ product.quantity_on_storage }}</p>
+    {% endif %}
+{% endblock %}

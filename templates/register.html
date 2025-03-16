@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block main %}
+
+<div class="Register_container">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="Register_form_group">
+                <label for="id_email">Email</label>
+                {{ form.email }}
+            </div>
+            <div class="Register_form_group">
+                <label for="id_first_name">First Name</label>
+                {{ form.first_name }}
+            </div>
+            <div class="Register_form_group">
+                <label for="id_last_name">Last Name</label>
+                {{ form.last_name }}
+            </div>
+            <div class="Register_form_group">
+                <label for="id_phone_number">Phone Number</label>
+                {{ form.phone_number }}
+            </div>
+            <div class="Register_form_group">
+                <label for="id_password1">Password</label>
+                {{ form.password1 }}
+            </div>
+            <div class="Register_form_group">
+                <label for="id_password2">Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+            <div class="Register_form_actions">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+        <div class="Register_links">
+            <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </div>
+    </div>
+    
+    
+{% endblock %}
