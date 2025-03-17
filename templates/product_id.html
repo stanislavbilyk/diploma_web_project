@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
 Product's page
 {% endblock %}
@@ -15,21 +17,67 @@ Product's page
         <a href="{% url 'brand_id' brand.pk %}">{{ brand.name }}</a> <span>&rsaquo;</span> 
     {% endif %}
     <a href="{% url 'product_id' product.pk %}">{{ product.name }}</a>
-</nav>    
+</nav>
+    
+<section class="Product_section">
+    <div class="Product_img">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 500px"> <br>
+    </div>
+    <div class="Product_info">
+        <ul class="Product_list">
+            <li><h1>{{ product.name }}</h1></li>
+            <li>
+                {% if product.discount_price %}
+                    <ul class="Price_section Old_price">
+                        <li class="Price">{{ product.price }}</li>                            
+                    </ul>                
+                    <ul class="Discount_price_section">
+                        <li class="Price">{{ product.discount_price }}</li>
+                        <li class="Currency">CZK</li>
+                    </ul>   
+                {% else %}        
+                    <p>Price {{ product.price }} CZK</p>            
+                {% endif %}
+            </li>
 
-<h1>{{ product.name }}</h1> <br>
- <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 600px"> <br>
- {{ product.description }} <br>
-    {% if product.discount_price %}
-        <ul class="Price_section Old_price">
-            <li class="Price">{{ product.price }}</li>                            
-        </ul>                
-        <ul class="Discount_price_section">
-            <li class="Price">{{ product.discount_price }}</li>
-            <li class="Currency">CZK</li>
-        </ul>   
-    {% else %}        
-        <p>Price  {{ product.price }}</p>
-        <p>In stock  {{ product.quantity_on_storage }}</p>
-    {% endif %}
+            {% if product.color %}<li><p>Color: {{ product.color }}</p></li>{% endif %}
+            {% if product.os %}<li><p>OS: {{ product.os }}</p></li>{% endif %}
+            {% if product.built_in_memory %}<li><p>Storage: {{ product.built_in_memory }} GB</p></li>{% endif %}
+            {% if product.screen_diagonal %}<li><p>Display size: {{ product.screen_diagonal }} "</p></li>{% endif %}
+            {% if product.battery_capacity %}<li><p>Battery capacity: {{ product.battery_capacity }} mAh</p></li>{% endif %}
+            {% if product.camera %}<li><p>Camera: {{ product.camera }} Mpx</p></li>{% endif %}
+            {% if product.processor %}<li><p>Processor: {{ product.processor }}</p></li>{% endif %}
+            {% if product.ram %}<li><p>RAM: {{ product.ram }}</p></li>{% endif %}
+
+            <li><p>In stock {{ product.quantity_on_storage }}</p></li>
+
+            {% if user.is_authenticated %}
+                <li>
+                    <ul class="Action_panel">
+                        <li>
+                            <form action="{% url 'toggle_wishlist' product.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="Wishlist_button">Add to Wishlist</button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{% url 'cart_item' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <button type="submit" class="Cart_button">Add to Cart</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </div>        
+</section>
+
+<div class="Tech_specifications">
+    <h3>Technical specification</h3><br>
+    {{ product.description }} 
+</div>  
+    
+<script src="{% static 'js/wishlist.js' %}?v={{ STATIC_VERSION }}"></script>    
 {% endblock %}

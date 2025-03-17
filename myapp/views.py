@@ -85,9 +85,9 @@ class ProductListView(ListView):
         context = super().get_context_data(**kwargs)
         context['iPhone16'] = Product.objects.get(name='iPhone 16 Pro Max 256 GB Black Titanium')
         context['MacbookAir'] = Product.objects.get(name='MacBook Air 13" M3 2024 Silver')
-        context['MacbookPro'] = Product.objects.get(name='MacBook Pro 16" M4 PRO MAX 2024 Space Black')
-        context['Playstation5'] = Product.objects.get(name='PlayStation 5 Pro')
-        context['AppleVisionPro'] = Product.objects.get(name='Apple Vision Pro')
+        context['MacbookPro'] = Product.objects.get(name='MacBook Pro 16" M4 PRO MAX Space Black')
+        context['Playstation5'] = Product.objects.get(name='PlayStation 5 Pro Digital Edition')
+        context['AppleVisionPro'] = Product.objects.get(name='Apple Vision Pro 256 GB')
         context['AirPodsMax'] = Product.objects.get(name='Apple AirPods Max Midnight')
         context['AppleWatch10'] = Product.objects.get(name='Apple Watch Series 10 42mm Jet Black')
         context['iPadPro'] = Product.objects.get(name='iPad Pro 13" 256GB M4 Silver')
@@ -223,7 +223,15 @@ class CategoryView(ListView):
 class BrandView(DetailView):
     template_name = 'brand.html'
     model = Brand
+    context_object_name = 'brand'
 
+    def get_queryset(self):
+        return Brand.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['products'] = Product.objects.filter(brand_id=self.kwargs['pk'])
+        return context
 
 class CartItemView(CreateView):
     template_name = 'cart.html'
