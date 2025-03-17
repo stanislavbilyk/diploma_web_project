@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 
-from .models import CustomUser, Address, Delivery, Payment
+from .models import CustomUser, Address, Delivery, Payment, Product
 from django.views.generic.edit import FormView
 from django import forms
 
@@ -78,6 +78,16 @@ class ProductSearchForm(forms.Form):
 
 form = ProductSearchForm()
 print(form.as_p())
+
+class AddNewProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price', 'discount_price','image', 'quantity_on_storage', 'category', 'brand', 'color', 'os', 'built_in_memory', 'screen_diagonal', 'battery_capacity', 'camera', 'processor', 'ram']
+
+class ProductUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'description', 'price', 'discount_price','image', 'quantity_on_storage', 'category', 'brand', 'color', 'os', 'built_in_memory', 'screen_diagonal', 'battery_capacity', 'camera', 'processor', 'ram']
 
 
 class AddressForm(forms.ModelForm):

@@ -38,12 +38,12 @@ a {
 }
 
 header a {
-    color: grey;
+    color: black;
     transition: color 0.3s ease;
 }
 
 header a:hover {
-    color: black;
+    color: blue;
     font-weight: bold;
 }
 
@@ -290,6 +290,10 @@ header a:hover {
 .Name_of_item {
     font-weight: bold;
     font-size: 20px;
+}
+
+.Bottom_of_item {
+    list-style-type: none;
 }
 
 .Price_section {

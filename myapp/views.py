@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Product, CustomUser, Purchase, Refund, CartItem, Cart, Category, Brand, Wishlist, Payment, Delivery, \
     Address, DeliveryService, PurchaseItem
 from .forms import AuthenticationForm, UserCreationForm, ProductSearchForm, ShippingForm, AddressForm, \
-    DeliveryServiceForm, PaymentForm
+    DeliveryServiceForm, PaymentForm, ProductUpdateForm, AddNewProductForm
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.db.models import Sum
@@ -39,7 +39,7 @@ class Register(CreateView):
     model = CustomUser
     form_class = UserCreationForm
     template_name = 'register.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('profile')
 
 
 class Logout(LoginRequiredMixin, LogoutView):
@@ -166,9 +166,10 @@ class ToggleWishlistView(LoginRequiredMixin, View):
 
 
 
-class ProductUpdate(UpdateView):
+class ProductUpdate(SuperUserPassesTestMixin, UpdateView):
     model = Product
     template_name = 'product_update_form.html'
+    form_class = ProductUpdateForm
     success_url = '/'
 
 
@@ -492,5 +493,12 @@ class PopularProducts(DetailView):
 class SummerSale(DetailView):
     model = Product
     template_name = 'summer_sale.html'
+
+
+class AddNewProduct(SuperUserPassesTestMixin, CreateView):
+    model = Product
+    template_name = 'add_new_product.html'
+    form_class = AddNewProductForm
+    success_url = '/'
 
 

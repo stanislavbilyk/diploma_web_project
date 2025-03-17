@@ -19,18 +19,20 @@ from django.shortcuts import render
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from myapp.views import Login, Register, Logout, ProfileView, ProductListView, ProductsPageView, ProductView, ToggleWishlistView, AboutView, ContactView, WishListView, CartItemView, CartView, UpdateCartView, DeliveryCreateView, DeleteCartItemView, PaymentSuccessView, CategoryView, BrandView, PopularProducts, SummerSale, AddressFormView, PaymentView
+from myapp.views import Login, Register, Logout, ProfileView, ProductUpdate, AddNewProduct, ProductListView, ProductsPageView, ProductView, ToggleWishlistView, AboutView, ContactView, WishListView, CartItemView, CartView, UpdateCartView, DeliveryCreateView, DeleteCartItemView, PaymentSuccessView, CategoryView, BrandView, PopularProducts, SummerSale, AddressFormView, PaymentView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', ProductListView.as_view(), name='main'),
     path('products/', ProductsPageView.as_view(), name='products'),
     path('product/<int:pk>/', ProductView.as_view(), name='product_id'),
+    path('product_update/<int:pk>/', ProductUpdate.as_view(), name='product_update'),
     path('category/<int:pk>/', CategoryView.as_view(), name='category_id'),
     path('brand/<int:pk>/', BrandView.as_view(), name='brand_id'),
     path('wishlist/toggle/<int:product_id>/', ToggleWishlistView.as_view(), name='toggle_wishlist'),
     path('cart_item/', CartItemView.as_view(), name='cart_item'),
     path('admin_menu/', include('myapp.admin_menu')),
+    path('add_new_product/', AddNewProduct.as_view(), name='add_new_product'),
     path('about', AboutView.as_view(), name='about'),
     path('contact_us', ContactView.as_view(), name='contact_us'),
     path('wishlist', WishListView.as_view(), name='wishlist'),

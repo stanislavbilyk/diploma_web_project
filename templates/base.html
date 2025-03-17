@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'index.css' %}">
     <link rel="stylesheet" href="{% static 'products.css' %}">
     <link rel="stylesheet" href="{% static 'account.css' %}">
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
@@ -24,10 +25,10 @@
         <a href="{% url 'main' %}">Home</a>
         <a href="{% url 'products' %}">Catalog</a>
         <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'contact_us' %}">Contact us</a>        
-        <a href="{% url 'wishlist' %}"><img src="{% static 'img/Vector.jpg' %}" alt="Wishlist"></a>
-        <a href="{% url 'cart' %}"><img src="{% static 'img/Cart.jpg' %}" alt="Cart"><span id="cart-count">0</span></a>
+        <a href="{% url 'contact_us' %}">Contact us</a>
         {% if user.is_authenticated %}
+        <a href="{% url 'wishlist' %}"><img src="{% static 'img/Vector.jpg' %}" alt="Wishlist"></a>
+        <a href="{% url 'cart' %}"><img src="{% static 'img/Cart.jpg' %}" alt="Cart"><span id="cart-count">0</span></a>        
         <a href="{% url 'profile' %}"><img src="{% static 'img/Login.jpg' %}" alt="Profile"></a>
         Hello, {{ user.first_name }}
         <form method="post" action="{% url 'logout' %}" style="display: inline;">
