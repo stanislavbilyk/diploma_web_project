@@ -50,8 +50,41 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(error => console.error("Ошибка:", error));
         });
     });
+    $(document).on("click", ".Wishlist_delete", function () {
+    let productId = $(this).data("product-id");
+    let deleteButton = $(this);
+    console.log("Клик по кнопке удаления, ID товара:", productId);
+    console.log("Отправка AJAX-запроса:", `/wishlist/delete/${productId}/`);
+
+    $.ajax({
+    url: `/wishlist/delete/${productId}/`,
+    type: "POST",
+    headers: { "X-CSRFToken": getCookie("csrftoken") },  // Используйте getCookie
+    success: function (data) {
+        console.log("Ответ от сервера на удаление:", data);
+
+        if (data.success) {
+            let itemElement = deleteButton.closest("ul.Wishlist_item");
+            console.log("Найден элемент для удаления:", itemElement);
+
+            if (itemElement.length) {
+                console.log("Удаляем элемент:", itemElement);
+                itemElement.remove();
+            } else {
+                console.warn("Не найден элемент для удаления!");
+            }
+
+        } else {
+            console.warn("Удаление товара не удалось. Ответ сервера:", data);
+        }
+    },
+    error: function (xhr, status, error) {
+        console.error("Ошибка AJAX-запроса:", error);
+    }
+});
 });
 
+});
 
 
 

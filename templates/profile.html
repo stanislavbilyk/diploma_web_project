@@ -37,14 +37,21 @@ Profile page
                                 {% endfor %}
                             </ul>
                         </li>
+                        {% if not purchase.refund %}
+            <button id="Refund_button" data-purchase-id="{{ purchase.id }}">Request refund</button>
+        {% else %}
+            <p>Refund already requested (Status: {{ purchase.refund.get_status_display }})</p>
+        {% endif %}
                     {% endfor %}
+                
                 </ul>
             {% else %}
                 <p>No purchases found.</p>
             {% endif %}
         </div>
+        
         <a href="{% url 'logout' %}" class="Logout_link">Logout</a>
     </div>
     
-    
+<script src="{% static 'js/refund.js' %}"></script>    
 {% endblock %}

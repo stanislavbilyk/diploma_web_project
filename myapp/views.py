@@ -1,13 +1,18 @@
+from urllib import request
+
+from django.contrib.messages.views import SuccessMessageMixin
 from django.utils import timezone
 
 from django.views import View
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, FormView, TemplateView, DeleteView
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from rest_framework.exceptions import ValidationError
+
 from .models import Product, CustomUser, Purchase, Refund, CartItem, Cart, Category, Brand, Wishlist, Payment, Delivery, \
     Address, DeliveryService, PurchaseItem
 from .forms import AuthenticationForm, UserCreationForm, ProductSearchForm, ShippingForm, AddressForm, \
-    DeliveryServiceForm, PaymentForm, ProductUpdateForm, AddNewProductForm
+    DeliveryServiceForm, PaymentForm, ProductUpdateForm, AddNewProductForm, RefundForm
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.db.models import Sum
@@ -24,6 +29,7 @@ import json
 from django.http import JsonResponse
 import stripe
 from django.conf import settings
+from django.db import transaction
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -164,6 +170,16 @@ class ToggleWishlistView(LoginRequiredMixin, View):
             return JsonResponse({"error": str(e)}, status=500)
 
 
+class DeleteWishlistItemView(View):
+    def post(self, request, *args, **kwargs):
+        product_id = self.kwargs.get("product_id")
+        product = get_object_or_404(Product, id=product_id)
+        wishlist_item = get_object_or_404(Wishlist, product=product, user=request.user)
+
+        wishlist_item.delete()
+
+        return JsonResponse({"success": True})
+
 
 
 class ProductUpdate(SuperUserPassesTestMixin, UpdateView):
@@ -179,10 +195,11 @@ class SearchProductsView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('query', '')
-        query_param = Q()
+        print(f"Search query: {query}")
         if query:
-            query_param = Q(name__icontains=query) | Q(description__icontains=query)
-        return Product.objects.filter(query_param)
+            return Product.objects.filter(
+                Q(name__icontains=query) | Q(description__icontains=query))
+        return Product.objects.none()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -462,7 +479,7 @@ class PaymentView(CreateView):
             self.object.payment_date = timezone.now()
             self.object.save()
 
-            return JsonResponse({"success": True, "redirect_url": reverse_lazy("payment_success")})
+            return JsonResponse({"success": True, "cart_count": 0, "redirect_url": reverse_lazy("payment_success")})
 
         except stripe.error.CardError as e:
             return JsonResponse({"success": False, "error": f"Card error: {e.error.message}"})
@@ -478,6 +495,39 @@ class PaymentView(CreateView):
 
 class PaymentSuccessView(TemplateView):
     template_name = 'payment_success.html'
+
+
+# class RefundRequestView(View):
+#     def post(self, request, purchase_id):
+#         purchase = get_object_or_404(Purchase, id=purchase_id)
+#         payment = purchase.payment
+#
+#         if not payment or payment.status != "completed":
+#             return JsonResponse({"error": "Payment not eligible for refund"}, status=400)
+#
+#         if hasattr(purchase, 'refund'):
+#             return JsonResponse({"error": "Refund already requested"}, status=400)
+#
+#         # Создаем возврат в Stripe
+#         try:
+#             refund = stripe.Refund.create(
+#                 charge=payment.transaction_id
+#             )
+#         except stripe.error.StripeError as e:
+#             return JsonResponse({"error": f"Stripe error: {str(e)}"}, status=400)
+#
+#         # Сохраняем возврат в БД
+#         with transaction.atomic():
+#             Refund.objects.create(
+#                 purchase=purchase,
+#                 status="completed",
+#                 reason="User requested a refund",
+#                 time_of_refund=timezone.now()
+#             )
+#             payment.status = "refunded"
+#             payment.save()
+#
+#         return JsonResponse({"message": "Refund processed successfully"})
 
 
 class AdminMenuListView(SuperUserPassesTestMixin, ListView):
@@ -500,5 +550,169 @@ class AddNewProduct(SuperUserPassesTestMixin, CreateView):
     template_name = 'add_new_product.html'
     form_class = AddNewProductForm
     success_url = '/'
+
+
+class RefundView(FormView):
+    template_name = 'refund.html'
+    form_class = RefundForm
+
+    def get_initial(self, purchase_id):
+        purchase = get_object_or_404(Purchase, id=purchase_id)
+        initial = super().get_initial()
+
+        # if delivery and delivery.delivery_address:
+        #     address = delivery.delivery_address
+        #     initial.update({
+        #         'country': address.country,
+        #         'postal_code': address.postal_code,
+        #         'city': address.city,
+        #         'street': address.street,
+        #         'house_number': address.house_number,
+        #         'phone_number': address.phone_number,
+        #     })
+
+        return initial
+
+    def form_valid(self, form):
+        address = form.save()
+        return redirect(reverse_lazy('checkout_delivery', kwargs={'address_id': address.id}))
+
+
+class RefundRequestView(SuccessMessageMixin, CreateView):
+    model = Refund
+    http_method_names = ['post']
+    success_url = reverse_lazy('refund_success')
+    success_message = "Refund requested successfully"
+    form_class = RefundForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        kwargs['purchase'] = self.get_purchase()
+        return kwargs
+
+    def get_purchase(self):
+        return get_object_or_404(Purchase, id=self.kwargs['pk'])
+
+    def create_stripe_refund(self, payment):
+        try:
+            return stripe.Refund.create(
+                payment_intent=payment.transaction_id,
+                reason="requested_by_customer"
+            )
+        except stripe.error.StripeError as e:
+            raise ValidationError(f"Stripe error: {str(e)}")
+
+    def form_valid(self, form):
+        purchase = self.get_purchase()
+        delivery = get_object_or_404(Delivery, purchase=purchase)
+        payment = get_object_or_404(Payment, purchase=purchase)
+
+        if delivery.status in ['pending', 'shipped', 'in_transit']:
+            refund_response = self.create_stripe_refund(payment)
+            with transaction.atomic():
+                refund = Refund.objects.create(
+                    purchase=purchase,
+                    status="approved",
+                    reason=self.request.POST.get("reason", "Не указана"),
+                )
+                delivery.status = 'cancelled'
+                delivery.save()
+                payment.status = 'refunded'
+                payment.save()
+            return JsonResponse({"message": "Refund processed successfully"})
+
+        elif delivery.status == 'delivered':
+            refund = Refund.objects.create(
+                purchase=purchase,
+                status="requested",
+                reason=self.request.POST.get("reason", "Не указана"),
+            )
+            return JsonResponse({"message": "Refund requested. Return the item to proceed."})
+
+        elif delivery.status == 'returned':
+            refund_response = self.create_stripe_refund(payment)
+            with transaction.atomic():
+                refund = get_object_or_404(Refund, purchase=purchase)
+                refund.status = 'approved'
+                refund.save()
+                delivery.status = 'cancelled'
+                delivery.save()
+                payment.status = 'refunded'
+                payment.save()
+            return JsonResponse({"message": "Refund processed successfully"})
+
+        elif delivery.status == 'cancelled':
+            return JsonResponse({"message": "Your purchase is already canceled"})
+
+        return super().form_valid(form)
+
+
+    # def post(self, request, **kwargs):
+    #     purchase_id = self.kwargs.get('purchase_id')
+    #     purchase = get_object_or_404(Purchase, user=request.user, id=purchase_id)
+    #
+    #     delivery = get_object_or_404(Delivery, purchase=purchase)
+    #     payment = get_object_or_404(Payment, purchase=purchase)
+    #
+    #     if not payment or payment.status != "completed":
+    #         return JsonResponse({"error": "Payment not eligible for refund"}, status=400)
+    #
+    #     if hasattr(purchase, 'refund'):
+    #         return JsonResponse({"error": "Refund already requested"}, status=400)
+    #
+    #     if delivery.status == ['pending', 'shipped', 'in_transit']:
+    #         try:
+    #             refund_response = stripe.Refund.create(
+    #                 payment_intent=payment.transaction_id,
+    #                 reason="requested_by_customer"
+    #             )
+    #         except stripe.error.StripeError as e:
+    #             return JsonResponse({"error": f"Stripe error: {str(e)}"}, status=400)
+    #
+    #         with transaction.atomic():
+    #             refund = Refund.objects.create(
+    #                 purchase=purchase,
+    #                 status="requested",
+    #                 reason=request.POST.get("reason", "Не указана"),
+    #             )
+    #             delivery.status = 'cancelled'
+    #             delivery.save()
+    #             payment.status = 'refunded'
+    #             payment.save()
+    #
+    #             refund.status = 'approved'
+    #             refund.save()
+    #         return JsonResponse({"message": "Refund processed successfully"})
+    #
+    #     elif delivery.status == 'delivered':
+    #         # Уведомить покупателя о необходимости вернуть товар
+    #         # Отправить инструкции по возврату
+    #         # Ожидать получения товара
+    #         # После получения товара и проверки его состояния:
+    #         refund = Refund.objects.create(purchase=purchase)
+    #
+    #     elif delivery.status == 'returned':
+    #         try:
+    #             refund_response = stripe.Refund.create(
+    #                 payment_intent=payment.transaction_id,
+    #                 reason="requested_by_customer"
+    #             )
+    #         except stripe.error.StripeError as e:
+    #             return JsonResponse({"error": f"Stripe error: {str(e)}"}, status=400)
+    #         with transaction.atomic():
+    #             refund = get_object_or_404(Refund, purchase=purchase)
+    #             delivery.status = 'cancelled'
+    #             delivery.save()
+    #
+    #             payment.status = 'refunded'
+    #             payment.save()
+    #
+    #             refund.status = 'approved'
+    #             refund.save()
+    #         return JsonResponse({"message": "Refund processed successfully"})
+    #
+    #     elif delivery.status == 'cancelled':
+    #         return JsonResponse({"message": "Your purchase already canceled"})
 
 

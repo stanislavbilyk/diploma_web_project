@@ -25,8 +25,7 @@ Product's page
     <div class="Sidebar">
     <h3>Filters</h3>
     <form method="get" id="Filter_form">
-        <div class="Filter_container">
-            <!-- Ползунок для цены -->
+        <div class="Filter_container">            
             <div class="Filter_item">
                 <label>Price:</label>
                 <input type="range" id="price_range" min="0" max="200000" step="1000">
@@ -34,8 +33,7 @@ Product's page
                 <input type="hidden" name="price_min" id="price_min" value="0">
                 <input type="hidden" name="price_max" id="price_max" value="200000">
             </div>
-
-            <!-- Фильтры (Категории) -->
+            
             <div class="Filter_item">
                 <button type="button" class="Filter_header">Category<span class="Filter_arrow">▼</span></button>
                 <div class="Filter_options">
@@ -47,8 +45,7 @@ Product's page
                     {% endfor %}
                 </div>
             </div>
-
-            <!-- Фильтры (Бренд) -->
+            
             <div class="Filter_item">
                 <button type="button" class="Filter_header">Brand<span class="Filter_arrow">▼</span></button>
                 <div class="Filter_options">
@@ -59,9 +56,8 @@ Product's page
                         </label>
                     {% endfor %}
                 </div>
-            </div>
-        
-                <!-- Фильтры (ОС) -->
+            </div>        
+                
             <div class="Filter_item">
                     <button type="button" class="Filter_header">OS<span class="Filter_arrow">▼</span></button>
                     <div class="Filter_options">
@@ -72,9 +68,8 @@ Product's page
                             </label>
                         {% endfor %}
                     </div>
-            </div>
-        
-                <!-- Фильтры (Цвет) -->
+            </div>        
+                
             <div class="Filter_item">
                     <button type="button" class="Filter_header">Color<span class="Filter_arrow">▼</span></button>
                     <div class="Filter_options">
@@ -85,9 +80,8 @@ Product's page
                             </label>
                         {% endfor %}
                     </div>
-            </div>
-        
-            <!-- Фильтр по встроенной памяти -->
+            </div>        
+            
             <div class="Filter_item">
                 <button type="button" class="Filter_header">Memory<span class="Filter_arrow">▼</span></button>
                 <div class="Filter_options">
@@ -98,9 +92,8 @@ Product's page
                         </label>
                     {% endfor %}
                 </div>
-            </div>
-        
-            <!-- Фильтр по камере -->
+            </div>        
+            
             <div class="Filter_item">
                 <button type="button" class="Filter_header">Camera<span class="Filter_arrow">▼</span></button>
                 <div class="Filter_options">
@@ -111,9 +104,8 @@ Product's page
                         </label>
                     {% endfor %}
                 </div>
-            </div>
-        
-            <!-- Фильтр по оперативной памяти -->
+            </div>        
+            
             <div class="Filter_item">
                 <button type="button" class="Filter_header">RAM<span class="Filter_arrow">▼</span></button>
                 <div class="Filter_options">

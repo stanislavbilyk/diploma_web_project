@@ -1,9 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate
 from django import forms
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 
-from .models import CustomUser, Address, Delivery, Payment, Product
+from .models import CustomUser, Address, Delivery, Payment, Product, Refund
 from django.views.generic.edit import FormView
 from django import forms
 
@@ -125,4 +127,36 @@ class PaymentForm(forms.ModelForm):
         model = Payment
         fields = []
 
+# class RefundForm(forms.ModelForm):
+#     class Meta:
+#         model = Refund
+#         fields = ['reason']
 
+
+class RefundForm(forms.ModelForm):
+    class Meta:
+        model = Refund
+        fields = ['reason']
+        widgets = {
+            'reason': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter a reason'}),
+        }
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        self.purchase = kwargs.pop('purchase', None)
+        self.reason = kwargs.pop('reason', None)
+        super().__init__(*args, **kwargs)
+    def clean(self):
+        cleaned_data = super().clean()
+        purchase = self.purchase
+        payment = get_object_or_404(Payment, purchase=purchase)
+
+        raise_an_error = False
+        if not payment or payment.status != "completed":
+            messages.error(self.request, "Payment not eligible for refund")
+            raise_an_error = True
+        if hasattr(purchase, 'refund'):
+            messages.error(self.request, "Refund already requested")
+            raise_an_error = True
+        if raise_an_error:
+            raise forms.ValidationError("Error occurred")
+        return cleaned_data

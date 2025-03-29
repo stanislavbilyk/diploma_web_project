@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Refund page
+{% endblock %}
+
+{% block main %}
+    
+<form method="post">
+    {% csrf_token %}
+    
+    <h3>Refund request</h3>
+
+    <div class="form-group">
+        <label for="id_reason">Reason:</label>
+        {{ form.country }}
+    </div>
+    
+    <button type="submit">Request refund</button>
+</form>
+
+
+ 
+{% endblock %}

@@ -62,6 +62,8 @@ if (!purchase_id) {
 .then(data => {
     if (data.success) {
         alert("Payment successful!");
+        localStorage.setItem("cart_count", "0");
+        $("#cart-count").hide();
         window.location.href = data.redirect_url;
     } else {
         alert("Payment failed: " + data.error);

@@ -144,7 +144,15 @@ class PurchaseItem(models.Model):
 
 class Refund(models.Model):
     purchase = models.OneToOneField(Purchase, on_delete=models.CASCADE, related_name='refund', null=True)
+    status = models.CharField(max_length=50, choices=[
+        ('requested', 'Requested'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+        ('completed', 'Completed'),
+    ], default='requested')
+    reason = models.TextField(null=True, blank=True)
     time_of_refund = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
 
 class Address(models.Model):
     country = models.CharField(max_length=100)
@@ -172,6 +180,7 @@ class Delivery(models.Model):
         ('in_transit', 'In transit'),
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
+        ('returned', 'Returned'),
     ], default='pending')
     delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True, blank=True)
     delivery_service = models.ForeignKey(DeliveryService, on_delete=models.CASCADE)
