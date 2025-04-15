@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,10 +19,12 @@
         <a href="{% url 'admin_menu' %}"><img src="{% static 'img/admin.png' %}" alt="Admin"></a>
         {% endif %}
         <a href="{% url 'main' %}" class="Logo"><img src="{% static 'img/Logo.jpg' %}" alt="Logo"></a>
-        <form action="{% url 'search_products' %}" method="get" class="search-form">
-    <input type="text" name="query" placeholder="Search product..." value="{{ request.GET.query }}">
-    <button type="submit">Search</button>
-</form>
+        <div class="search-container">
+            <form action="{% url 'search_products' %}" method="get" class="search-form">                
+                <input class="search-input" type="text" name="query" placeholder="Search product..." value="{{ request.GET.query }}">
+                <button type="submit" class="search-button"></button>
+            </form>
+        </div>
         <a href="{% url 'main' %}">Home</a>
         <a href="{% url 'products' %}">Catalog</a>
         <a href="{% url 'about' %}">About</a>

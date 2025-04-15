@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% load static %}
+
+{% block title %}
+Contact us
+{% endblock %}
+
+{% block main %}
+    
+<section class="Central_section">    
+    <h1>Contact us</h1><br>
+    <p class="Inside_block">We are always happy to assist you! If you have any questions about your order, returns, or our products, feel free to contact us using the details below.</p>
+    <h2 class="Address_title">Company Information</h2>
+    <div class="Inside_block">
+        <p><span class="Company_address">Company Name:</span><span> Cyber Technology s.r.o.</span></p>
+        <p><span class="Company_address">IČO:</span><span> 12345678</span></p>
+        <p><span class="Company_address">DIČ (DPH):</span><span> CZ12345678</span></p>
+        <p><span class="Company_address">Registered Address:</span><span> Václavské náměstí 832/19, 110 00 Prague 1, Czech Republic</span></p>    
+    </div>
+    <h2 class="Address_title">Customer Support</h2>
+    <div class="Inside_block">
+        <p><span class="Company_address">📞 Phone:</span><span> +420 234 567 890</span></p>
+        <p><span class="Company_address">📧 Email:</span><span> support@cyber.cz</span></p>
+        <p><span class="Company_address">🕒 Working Hours:</span><span> Monday – Friday, 9:00 AM – 6:00 PM</span></p>
+    </div>
+    <h2 class="Address_title">Return & Warehouse Address</h2>
+    <div class="Inside_block">
+        <p>If you need to return a product, please send it to our warehouse:</p>
+        <p style="font-weight: bold">📍 Return Address:</p>
+        <p>TechWorld s.r.o. – Returns Department</p>
+        <p>Průmyslová 456, 102 00 Prague 10, Czech Republic</p>
+        <p><span class="Company_address">📞 Warehouse Phone:</span><span> +420 234 567 891</span></p>
+    </div>
+</section>
+
+{% endblock %}

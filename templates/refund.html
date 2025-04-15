@@ -1,26 +1,49 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
-{% block title %}
-Refund page
-{% endblock %}
+{% block title %}Refund page{% endblock %}
 
 {% block main %}
-    
-<form method="post">
-    {% csrf_token %}
-    
-    <h3>Refund request</h3>
+<section class="Central_section">
+    <div class="Inside_block">
+    <h2>Request refund</h2>
 
-    <div class="form-group">
-        <label for="id_reason">Reason:</label>
-        {{ form.country }}
+    <h3>Your purchases:</h3>
+    {% for item in purchase_items %}
+        <div class="Purchase_item">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            <div class="Purchase_item_details">
+                <p><strong>Product:</strong> {{ item.product.name }}</p>
+                <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                {% if item.product.discount_price %}
+                   	<p><strong>Price:</strong> {{ item.product.discount_price }} CZK</p>                                 
+                {% else %}
+                    <p><strong>Price:</strong> {{ item.product.price }} CZK</p>
+                {% endif %}
+                               
+            </div>
+        </div>
+    {% endfor %}
+    <p><strong>Total price:</strong> {{ total_price }}CZK</p>
+    
+    <h3>Return Policy:</h3>
+    <ul class="Rules">
+        {% for rule in return_policy %}
+            <li>{{ rule }}</li>
+        {% endfor %}
+    </ul>
+
+    <form method="post" action="{% url 'refund_request' purchase_id=purchase.id %}" class="refund-form">
+        {% csrf_token %}
+        <input type="hidden" name="purchase_id" value="{{ purchase.id }}">
+        <div class="form-reason">
+            <label for="reason">Reason for refund:</label>
+            <textarea name="reason" id="reason" class="form-control" placeholder="Enter the reason" rows="4"></textarea>
+        </div>
+        <div class="form-reason">    
+            <button type="submit" class="Refund_button Refund_request_button">Request refund</button>
+        </div>
+    </form>  
     </div>
-    
-    <button type="submit">Request refund</button>
-</form>
-
-
- 
+</section>     
 {% endblock %}

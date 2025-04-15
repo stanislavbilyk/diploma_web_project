@@ -9,19 +9,23 @@ Address page
 {% block main %}
     
 <section class="Payment_container">
-    <div class="Summary">
+    <div class="Summary Central_section">
         {% if purchase %}
             <h3>Summary</h3>   
             <ul class="Cart_list">
                 {% for item in cart_items %}
                     <li>
-                        <ul class="Cart_items">
+                        <ul class="Cart_items Inside_block">
                             <li class="Image_of_item">
                                 <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-width: 50px; max-height: 50px">
                             </li>
                             <li class="Items_name">{{ item.product.name }}</li>
                             <li>
-                                {{ item.product.price }}
+                                {% if item.product.discount_price %}
+                                	{{ item.product.discount_price }}                                 
+                                {% else %}
+                                    {{ item.product.price }}
+                                {% endif %}
                             </li>
                             <li>
                                 <span> x </span>
@@ -57,16 +61,21 @@ Address page
             <li class="Total_price">
                 <form method="post" class="Payment_form" id="payment-form">
                     {% csrf_token %}
+                    <div class="Inside_block Card_block">
+                        <label for="card-number">Card Number</label>
+                        <div id="card-number"></div>
+                    </div>
                     
-                    <label for="card-number">Card Number</label>
-                    <div id="card-number"></div>
-                
-                    <label for="card-expiry">Expiration Date</label>
-                    <div id="card-expiry"></div>
-                
-                    <label for="card-cvc">CVC</label>
-                    <div id="card-cvc"></div>
-                
+                    <div class="Inside_block Card_block">
+                        <label for="card-expiry">Expiration Date</label>
+                        <div id="card-expiry"></div>
+                    </div>
+                    
+                    <div class="Inside_block Card_block">
+                        <label for="card-cvc">CVC</label>
+                        <div id="card-cvc"></div>
+                    </div>
+                    
                     <div id="card-errors" role="alert"></div>
                 
                     <button type="submit" class="Pay_now" id="submit-button">Pay Now</button>
@@ -76,6 +85,10 @@ Address page
     </div>
 </section>
 
+<div id="popup-message" class="popup">
+    <p id="popup-text"></p>
+</div>
+    
 <script src="https://js.stripe.com/v3/"></script> 
 <script src="{% static 'js/payment.js' %}"></script>    
 {% endblock %}

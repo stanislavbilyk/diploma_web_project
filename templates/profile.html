@@ -23,25 +23,32 @@ Profile page
                     {% for purchase_data in purchase_list %}
                         <li>                            
                             <p><strong>Date:</strong> {{ purchase_data.purchase.time_of_purchase }}</p>                            
-                            <ul>
+                            
                                 {% for item in purchase_data.items %}
                                     <div class="Purchase_item">
                                         <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
                                         <div class="Purchase_item_details">
                                             <p><strong>Product:</strong> {{ item.product.name }}</p>
                                             <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-                                            <p><strong>Price per item:</strong> {{ item.product.price }}CZK</p>
+                                            {% if item.product.discount_price %}
+                                               	<p><strong>Price per item:</strong> {{ item.product.discount_price }} CZK</p>                                 
+                                            {% else %}
+                                                <p><strong>Price per item:</strong> {{ item.product.price }} CZK</p>
+                                            {% endif %}
                                             <p><strong>Total for item:</strong> {{ item.total_price }}CZK</p>
                                         </div>
                                     </div>
                                 {% endfor %}
-                            </ul>
+                                <p><strong>Amount of purchase:</strong> {{ purchase_data.purchase.payment.amount }}CZK</p>
+                            {% if not purchase_data.purchase.refund %}
+                            <form action="{% url 'refund' purchase_data.purchase.id %}" method="GET">
+                                <button class="Refund_request_button">Request refund</button>
+                            </form>
+                        {% else %}
+                            <p>Refund already requested (Status: {{ purchase_data.purchase.refund.status }})</p>
                         </li>
-                        {% if not purchase.refund %}
-            <button id="Refund_button" data-purchase-id="{{ purchase.id }}">Request refund</button>
-        {% else %}
-            <p>Refund already requested (Status: {{ purchase.refund.get_status_display }})</p>
-        {% endif %}
+                        
+            {% endif %}
                     {% endfor %}
                 
                 </ul>
@@ -51,7 +58,6 @@ Profile page
         </div>
         
         <a href="{% url 'logout' %}" class="Logout_link">Logout</a>
-    </div>
-    
-<script src="{% static 'js/refund.js' %}"></script>    
+    </div>    
+  
 {% endblock %}

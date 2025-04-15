@@ -1,7 +1,7 @@
-document.getElementById("Refund_button")?.addEventListener("click", function() {
+document.getElementById("Refund_button")?.addEventListener("click", function(event) {event.preventDefault();
     let purchaseId = this.dataset.purchaseId;
 
-    fetch(`/refund/${purchaseId}/`, {
+    fetch(`/refund_request/${purchaseId}/`, {
         method: "POST",
         headers: {
             "X-CSRFToken": getCSRFToken(),

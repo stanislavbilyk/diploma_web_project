@@ -14,6 +14,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("payment-form");
     const submitButton = document.getElementById("submit-button");
 
+    function showPopup(message, success = true) {
+        let popup = document.getElementById("popup-message");
+        let popupText = document.getElementById("popup-text");
+
+        popupText.innerText = message;
+        popup.style.backgroundColor = success ? "#4CAF50" : "#f44336";
+        popup.style.display = "block";
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 3000);
+    }
+
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
         submitButton.disabled = true;
@@ -61,18 +73,20 @@ if (!purchase_id) {
 })
 .then(data => {
     if (data.success) {
-        alert("Payment successful!");
+        showPopup("Payment successful!");
         localStorage.setItem("cart_count", "0");
         $("#cart-count").hide();
+        setTimeout(() => {
         window.location.href = data.redirect_url;
+        }, 2000);
     } else {
-        alert("Payment failed: " + data.error);
+        showPopup("Payment failed: " + data.error);
         submitButton.disabled = false;
     }
 })
 .catch(error => {
     console.error("Error:", error);
-    alert("An error occurred. Please try again.");
+    showPopup("An error occurred. Please try again.");
     submitButton.disabled = false;
 });
 }

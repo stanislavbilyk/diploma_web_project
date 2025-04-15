@@ -77,7 +77,11 @@ Product's page
 <div class="Tech_specifications">
     <h3>Technical specification</h3><br>
     {{ product.description }} 
-</div>  
+</div>
+    
+<div id="popup-message" class="popup">
+    <p id="popup-text"></p>
+</div>    
     
 <script src="{% static 'js/wishlist.js' %}?v={{ STATIC_VERSION }}"></script>    
 {% endblock %}

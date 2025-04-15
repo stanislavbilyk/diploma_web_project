@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $.ajax({
     url: `/wishlist/delete/${productId}/`,
     type: "POST",
-    headers: { "X-CSRFToken": getCookie("csrftoken") },  // Используйте getCookie
+    headers: { "X-CSRFToken": getCookie("csrftoken") },
     success: function (data) {
         console.log("Ответ от сервера на удаление:", data);
 
@@ -86,6 +86,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    function showPopup(message, success = true) {
+        let popup = document.getElementById("popup-message");
+        let popupText = document.getElementById("popup-text");
+
+        popupText.innerText = message;
+        popup.style.backgroundColor = success ? "#4CAF50" : "#f44336";
+        popup.style.display = "block";
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, 3000);
+    }
+
+    document.querySelectorAll(".Wishlist_button, .Cart_button").forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            let form = this.closest("form");
+            let formData = new FormData(form);
+
+            fetch(form.action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+                }
+            })
+            .then(response => response.json())
+.then(data => {
+    let message = "";
+
+    if (data.added !== undefined) {
+        // Это ответ от Wishlist
+        message = data.added ? "Added to Wishlist!" : "Removed from Wishlist!";
+    } else if (data.cart_count !== undefined) {
+        // Это ответ от Cart
+        message = "Added to Cart!";
+    } else {
+        message = "Something went wrong!";
+    }
+
+    showPopup(message);
+})
+.catch(() => showPopup("Error connecting to server!", false));
+        });
+    });
+});
 
 
 

@@ -39,13 +39,15 @@ a {
 
 header a {
     color: black;
-    transition: color 0.3s ease;
     font-size: 20px;
+    font-weight: normal;
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 header a:hover {
     color: blue;
-    font-weight: bold;
+    transform: scale(1.1);
 }
 
 .top_market {
@@ -204,7 +206,7 @@ header a:hover {
 
 .Our_items {
     width: 100%;
-    margin: 20px;
+    margin: 100px 100px 100px 0;
     flex-grow: 1;
 }
 
@@ -368,8 +370,12 @@ header a:hover {
 }
 
 .Market_image {
-    width: 360px;
-    height: 360px;
+    width: 341px;
+    height: 341px;
+}
+
+.Market_image img {
+    width: 341px;
 }
 
 .Market_tittle {
@@ -468,9 +474,12 @@ header a:hover {
 
 .pagination {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; /* Выравнивание по центру */
     gap: 10px;
-    margin-right: 70px;
+    margin-right: 0; /* Убираем смещение вправо */
+    clear: both; /* Очищает обтекание */
+    width: 100%; /* Занимает всю ширину */
+    padding-top: 20px; /* Отступ, чтобы не прилипала к товарам */
 }
 
 .Big_Summer_Sale {
@@ -546,4 +555,71 @@ header a:hover {
     flex-direction: column;
     list-style-type: none;
     gap: 20px;
+}
+
+.Central_section {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.Inside_block {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+.Address_title {
+    margin: 20px 0 20px;
+}
+
+.Company_address {
+    font-weight: bold;
+}
+
+
+
+.search-container:after {content:""; clear:both; display:table}
+
+.search-form {
+    width: auto;
+    float: right;
+    margin-right: 30px;
+    position: relative;
+}
+
+.search-input {
+    width: 250px;
+    height: 42px;
+    padding-left: 15px;
+    border-radius: 42px;
+    border: 2px solid #324b4e;
+    background: #eefafd;
+    outline: none;
+    position: relative;
+    transition: .3s linear;
+}
+
+.search-input:focus {
+    width: 300px;
+}
+
+.search-button {
+    width: 42px;
+    height: 42px;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.search-button:before{
+    content: "\f002";
+    font-family: FontAwesome;
+    color: #324b4e;
 }

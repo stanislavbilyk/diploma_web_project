@@ -1,0 +1,62 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+
+{% block title %}
+Admin Menu. List of refunds
+{% endblock %}
+
+{% block main %}
+<div class="Admin_menu_items">
+    <h1 style="margin-left: 450px">List of refunds</h1>
+    <ul class="List_of_refunds">
+    {% for refund in refund_list %}
+        <li class="Item_of_refund">
+            <ul class="Refund">
+                {% for item in refund.purchase.items.all %}                
+                    <li class="Name_of_item">Name of purchase: {{ item.product.name }}</li><br>
+                    <li class="Description_of_item">Quantity: {{ item.quantity }}</li><br>                    
+                    <li class="Description_of_item">Price of item: {{ item.product.price }}</li><br>                    
+                {% endfor %}
+                    <li class="Separator"><span>________________________________________________</span></li>
+                    <li class="Description_of_item">Time of purchase: {{ refund.purchase.time_of_purchase }}</li><br>
+                    <li class="Description_of_item">Time of refund: {{ refund.time_of_refund }}</li><br>
+                    <li class="Description_of_item">User: {{ refund.purchase.user }}</li><br>
+                    <li class="Description_of_item">Reason: {{ refund.reason }}</li><br>
+                    <li class="Description_of_item">Delivery status: {{ refund.purchase.delivery.status }}</li><br>
+                    <li class="Description_of_item">Refund status: {{ refund.status }}</li><br>
+            </ul>
+        </li>
+        {% if refund.status == 'requested' %}
+        <li class="Refund_buttons">
+            <form action="{% url 'refund_accept' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="refund_id" value="{{ refund.id }}" />
+                <input type="submit" name="accept" value="Accept" class="Gradient_button" id="Accept_button">
+            </form>
+            <form action="{% url 'refund_decline' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="refund_id" value="{{ refund.id }}" />
+                <input type="submit" name="decline" value="Decline" class="Gradient_button" id="Decline_button">
+            </form>
+        </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+</div>
+    
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+    
+<div id="popup-message" class="popup">
+    <p id="popup-text"></p>
+</div>
+    
+<script src="{% static 'js/refund_decision.js' %}?v={{ STATIC_VERSION }}"></script>
+{% endblock %}

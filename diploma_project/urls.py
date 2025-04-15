@@ -24,7 +24,8 @@ from django.views.generic import TemplateView
 from myapp.views import Login, Register, Logout, ProfileView, ProductUpdate, AddNewProduct, ProductListView, \
     ProductsPageView, ProductView, ToggleWishlistView, DeleteWishlistItemView, AboutView, ContactView, WishListView, \
     CartItemView, CartView, UpdateCartView, DeliveryCreateView, DeleteCartItemView, PaymentSuccessView, CategoryView, \
-    BrandView, PopularProducts, SummerSale, AddressFormView, PaymentView, SearchProductsView, RefundRequestView
+    BrandView, PopularProducts, SummerSaleView, AddressFormView, PaymentView, SearchProductsView, RefundView, RefundRequestView, \
+    RefundListView, RefundAcceptView, RefundDeclineView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,13 +52,17 @@ urlpatterns = [
     path('register/', Register.as_view(), name='register'),
     path('logout/', Logout.as_view(), name='logout'),
     path('popular_products', PopularProducts.as_view(), name='popular_products'),
-    path('summer_sale', SummerSale.as_view(), name='summer_sale'),
+    path('summer_sale', SummerSaleView.as_view(), name='summer_sale'),
     path('checkout/address/', AddressFormView.as_view(), name='checkout_address'),
     path('checkout/delivery/<int:address_id>/', DeliveryCreateView.as_view(), name='checkout_delivery'),
     path('checkout/payment/<int:purchase_id>/', PaymentView.as_view(), name='checkout_payment'),
     path('payment/success/', PaymentSuccessView.as_view(), name='payment_success'),
-    path('refund/<int:purchase_id>/', RefundRequestView.as_view(), name='refund'),
-    path('refund/success/', TemplateView.as_view(template_name='refund_success.html'), name='refund_success')
+    path('refund/<int:purchase_id>/', RefundView.as_view(), name='refund'),
+    path('refund_request/<int:purchase_id>/', RefundRequestView.as_view(), name='refund_request'),
+    path('refund/success/', TemplateView.as_view(template_name='refund_success.html'), name='refund_success'),
+    path('view_refunds', RefundListView.as_view(), name='view_refunds'),
+    path('refund_accept', RefundAcceptView.as_view(), name='refund_accept'),
+    path('refund_decline', RefundDeclineView.as_view(), name='refund_decline'),
 
 ]
 

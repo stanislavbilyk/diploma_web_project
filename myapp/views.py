@@ -1,5 +1,6 @@
 from urllib import request
 
+from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.utils import timezone
 
@@ -18,7 +19,7 @@ from django.db.models import Q
 from django.db.models import Sum
 from .mixins import SuperUserPassesTestMixin
 from django.shortcuts import redirect, get_object_or_404, render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.core.paginator import Paginator
 from django_filters.views import FilterView
 from .filters import ProductFilter
@@ -69,10 +70,11 @@ class ProfileView(LoginRequiredMixin, DetailView):
         for purchase in purchases:
             items_with_total = []
             for item in purchase.items.all():
+                price = item.product.discount_price or item.product.price
                 items_with_total.append({
                     'product': item.product,
                     'quantity': item.quantity,
-                    'total_price': item.product.price * item.quantity,
+                    'total_price': price * item.quantity,
                 })
             purchase_list.append({
                 'purchase': purchase,
@@ -90,7 +92,7 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['iPhone16'] = Product.objects.get(name='iPhone 16 Pro Max 256 GB Black Titanium')
-        context['MacbookAir'] = Product.objects.get(name='MacBook Air 13" M3 2024 Silver')
+        context['MacbookAir'] = Product.objects.get(name='MacBook Air 13" M3 2024 Silver 24Gb / 512Gb')
         context['MacbookPro'] = Product.objects.get(name='MacBook Pro 16" M4 PRO MAX Space Black')
         context['Playstation5'] = Product.objects.get(name='PlayStation 5 Pro Digital Edition')
         context['AppleVisionPro'] = Product.objects.get(name='Apple Vision Pro 256 GB')
@@ -149,6 +151,25 @@ class ProductView(DetailView):
         return context
 
 
+class SummerSaleView(FilterView):
+    model = Product
+    template_name = 'summer_sale.html'
+    paginate_by = 9
+    filterset_class = ProductFilter
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['unique_memory_values'] = (Product.objects.values_list("built_in_memory", flat=True).distinct().order_by("built_in_memory"))
+        context['unique_camera_values'] = (Product.objects.values_list("camera", flat=True).distinct().order_by("camera"))
+        context['unique_ram_values'] = (Product.objects.values_list("ram", flat=True).distinct().order_by("ram"))
+        context["discounted_products"] = Product.objects.filter(discount_price__isnull=False)
+        if self.request.user.is_authenticated:
+            context['wishlist_items'] = Wishlist.objects.filter(user=self.request.user).values_list('product_id',
+                                                                                                    flat=True)
+        else:
+            context['wishlist_items'] = []
+        return context
+
+
 class ToggleWishlistView(LoginRequiredMixin, View):
     def post(self, request, product_id):
         try:
@@ -161,10 +182,10 @@ class ToggleWishlistView(LoginRequiredMixin, View):
             if not created:
                 wishlist_item.delete()
 
-                return JsonResponse({"added": False})
+                return JsonResponse({"added": False, "success": True})
 
 
-            return JsonResponse({"added": True})
+            return JsonResponse({"added": True, "success": True})
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
@@ -281,10 +302,11 @@ class CartView(ListView):
         cart_items = CartItem.objects.filter(cart=cart).select_related('product')
 
         for item in cart_items:
-            item.total_price_per_item = item.product.price * item.quantity
+            price = item.product.discount_price or item.product.price
+            item.total_price_per_item = price * item.quantity
 
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
-        price_excl_VAT = total_price / Decimal("1.21")  # Без НДС 21%
+        total_price = sum(item.total_price_per_item for item in cart_items)
+        price_excl_VAT = total_price / Decimal("1.21")
 
         context = super().get_context_data(**kwargs)
         context['cart_items'] = cart_items
@@ -327,12 +349,17 @@ class UpdateCartView(LoginRequiredMixin, View):
         cart_item.refresh_from_db()
 
         print(f"Количество ПОСЛЕ refresh_from_db: {cart_item.quantity}")
-        total_price = sum(item.product.price * item.quantity for item in cart.items.all())
+        total_price = sum(
+            (item.product.discount_price or item.product.price) * item.quantity
+            for item in cart.items.all()
+        )
         price_excl_vat = total_price / Decimal("1.21")
+
+        price = cart_item.product.discount_price or cart_item.product.price
 
         return JsonResponse({
             "quantity": cart_item.quantity,
-            "item_total_price": cart_item.product.price * cart_item.quantity,
+            "item_total_price": price * cart_item.quantity,
             "total_price": total_price,
             "price_excl_vat": int(round(price_excl_vat)),
         })
@@ -436,8 +463,13 @@ class PaymentView(CreateView):
         if purchase_id:
             purchase = Purchase.objects.get(id=purchase_id)
             context['purchase'] = purchase
-            context['cart_items'] = purchase.items.all()
-            total_price = sum(item.product.price * item.quantity for item in purchase.items.all())
+
+            cart_items = purchase.items.all()
+            context['cart_items'] = cart_items
+            total_price = 0
+            for item in cart_items:
+                price = item.product.discount_price or item.product.price
+                total_price += price * item.quantity
             context["total_price"] = round(total_price)
             price_excl_VAT = total_price / Decimal("1.21")
             context["price_excl_VAT"] = round(price_excl_VAT)
@@ -452,7 +484,12 @@ class PaymentView(CreateView):
     def form_valid(self, form):
         purchase_id = self.kwargs.get("purchase_id")
         purchase = Purchase.objects.get(id=purchase_id)
-        total_price = sum(item.product.price * item.quantity for item in purchase.items.all())
+
+        cart_items = purchase.items.all()
+        total_price = 0
+        for item in cart_items:
+            price = item.product.discount_price or item.product.price
+            total_price += price * item.quantity
 
         form.instance.purchase = purchase
         form.instance.amount = total_price
@@ -535,7 +572,7 @@ class AdminMenuListView(SuperUserPassesTestMixin, ListView):
     template_name = 'admin_menu.html'
 
 
-class PopularProducts(DetailView):
+class PopularProducts(TemplateView):
     model = Product
     template_name = 'popular_products.html'
 
@@ -552,13 +589,33 @@ class AddNewProduct(SuperUserPassesTestMixin, CreateView):
     success_url = '/'
 
 
-class RefundView(FormView):
+class RefundView(TemplateView):
     template_name = 'refund.html'
-    form_class = RefundForm
 
-    def get_initial(self, purchase_id):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        purchase_id = self.kwargs.get("purchase_id")
         purchase = get_object_or_404(Purchase, id=purchase_id)
-        initial = super().get_initial()
+        context['purchase'] = purchase
+        purchase_items = purchase.items.all()
+        context['purchase_items'] = purchase_items
+
+        total_price = 0
+        for item in purchase_items:
+            price = item.product.discount_price or item.product.price
+            total_price += price * item.quantity
+
+        context["total_price"] = round(total_price)
+        print(total_price)
+        context['return_policy'] = [
+            "Returns are possible within 14 days.",
+            "The product must be in a marketable condition.",
+            "If you have already received the goods, please send them to our warehouse."
+        ]
+        return context
+    # def get_initial(self, purchase_id):
+    #     purchase = get_object_or_404(Purchase, id=purchase_id)
+    #     initial = super().get_initial()
 
         # if delivery and delivery.delivery_address:
         #     address = delivery.delivery_address
@@ -571,11 +628,11 @@ class RefundView(FormView):
         #         'phone_number': address.phone_number,
         #     })
 
-        return initial
+        # return initial
 
-    def form_valid(self, form):
-        address = form.save()
-        return redirect(reverse_lazy('checkout_delivery', kwargs={'address_id': address.id}))
+    # def form_valid(self, form):
+    #     address = form.save()
+    #     return redirect(reverse_lazy('checkout_delivery', kwargs={'address_id': address.id}))
 
 
 class RefundRequestView(SuccessMessageMixin, CreateView):
@@ -592,12 +649,12 @@ class RefundRequestView(SuccessMessageMixin, CreateView):
         return kwargs
 
     def get_purchase(self):
-        return get_object_or_404(Purchase, id=self.kwargs['pk'])
+        return get_object_or_404(Purchase, id=self.kwargs['purchase_id'])
 
     def create_stripe_refund(self, payment):
         try:
             return stripe.Refund.create(
-                payment_intent=payment.transaction_id,
+                charge=payment.transaction_id,
                 reason="requested_by_customer"
             )
         except stripe.error.StripeError as e:
@@ -609,110 +666,88 @@ class RefundRequestView(SuccessMessageMixin, CreateView):
         payment = get_object_or_404(Payment, purchase=purchase)
 
         if delivery.status in ['pending', 'shipped', 'in_transit']:
-            refund_response = self.create_stripe_refund(payment)
+            self.create_stripe_refund(payment)
+
             with transaction.atomic():
                 refund = Refund.objects.create(
                     purchase=purchase,
                     status="approved",
-                    reason=self.request.POST.get("reason", "Не указана"),
+                    reason=self.request.POST.get("reason", "Not specified")
                 )
+                self.object = refund
+
                 delivery.status = 'cancelled'
                 delivery.save()
                 payment.status = 'refunded'
                 payment.save()
-            return JsonResponse({"message": "Refund processed successfully"})
+
+            messages.success(self.request, "Refund processed successfully")
+            return redirect(self.get_success_url())
 
         elif delivery.status == 'delivered':
             refund = Refund.objects.create(
                 purchase=purchase,
                 status="requested",
-                reason=self.request.POST.get("reason", "Не указана"),
+                reason=self.request.POST.get("reason", "Not specified")
             )
-            return JsonResponse({"message": "Refund requested. Return the item to proceed."})
+            self.object = refund
+            messages.success(self.request, "Refund requested. Return the item to proceed.")
+            return redirect(self.get_success_url())
 
-        elif delivery.status == 'returned':
-            refund_response = self.create_stripe_refund(payment)
-            with transaction.atomic():
-                refund = get_object_or_404(Refund, purchase=purchase)
-                refund.status = 'approved'
-                refund.save()
-                delivery.status = 'cancelled'
-                delivery.save()
-                payment.status = 'refunded'
-                payment.save()
-            return JsonResponse({"message": "Refund processed successfully"})
 
         elif delivery.status == 'cancelled':
-            return JsonResponse({"message": "Your purchase is already canceled"})
+            messages.success(self.request, "Your purchase is already canceled")
+            self.object = None
+            return redirect(self.get_success_url())
 
         return super().form_valid(form)
 
 
-    # def post(self, request, **kwargs):
-    #     purchase_id = self.kwargs.get('purchase_id')
-    #     purchase = get_object_or_404(Purchase, user=request.user, id=purchase_id)
-    #
-    #     delivery = get_object_or_404(Delivery, purchase=purchase)
-    #     payment = get_object_or_404(Payment, purchase=purchase)
-    #
-    #     if not payment or payment.status != "completed":
-    #         return JsonResponse({"error": "Payment not eligible for refund"}, status=400)
-    #
-    #     if hasattr(purchase, 'refund'):
-    #         return JsonResponse({"error": "Refund already requested"}, status=400)
-    #
-    #     if delivery.status == ['pending', 'shipped', 'in_transit']:
-    #         try:
-    #             refund_response = stripe.Refund.create(
-    #                 payment_intent=payment.transaction_id,
-    #                 reason="requested_by_customer"
-    #             )
-    #         except stripe.error.StripeError as e:
-    #             return JsonResponse({"error": f"Stripe error: {str(e)}"}, status=400)
-    #
-    #         with transaction.atomic():
-    #             refund = Refund.objects.create(
-    #                 purchase=purchase,
-    #                 status="requested",
-    #                 reason=request.POST.get("reason", "Не указана"),
-    #             )
-    #             delivery.status = 'cancelled'
-    #             delivery.save()
-    #             payment.status = 'refunded'
-    #             payment.save()
-    #
-    #             refund.status = 'approved'
-    #             refund.save()
-    #         return JsonResponse({"message": "Refund processed successfully"})
-    #
-    #     elif delivery.status == 'delivered':
-    #         # Уведомить покупателя о необходимости вернуть товар
-    #         # Отправить инструкции по возврату
-    #         # Ожидать получения товара
-    #         # После получения товара и проверки его состояния:
-    #         refund = Refund.objects.create(purchase=purchase)
-    #
-    #     elif delivery.status == 'returned':
-    #         try:
-    #             refund_response = stripe.Refund.create(
-    #                 payment_intent=payment.transaction_id,
-    #                 reason="requested_by_customer"
-    #             )
-    #         except stripe.error.StripeError as e:
-    #             return JsonResponse({"error": f"Stripe error: {str(e)}"}, status=400)
-    #         with transaction.atomic():
-    #             refund = get_object_or_404(Refund, purchase=purchase)
-    #             delivery.status = 'cancelled'
-    #             delivery.save()
-    #
-    #             payment.status = 'refunded'
-    #             payment.save()
-    #
-    #             refund.status = 'approved'
-    #             refund.save()
-    #         return JsonResponse({"message": "Refund processed successfully"})
-    #
-    #     elif delivery.status == 'cancelled':
-    #         return JsonResponse({"message": "Your purchase already canceled"})
+
+class RefundListView(SuperUserPassesTestMixin, ListView):
+    model = Refund
+    template_name = 'view_refunds.html'
 
 
+
+class RefundAcceptView(SuperUserPassesTestMixin, View):
+    def post(self, request, *args, **kwargs):
+        refund_id = request.POST.get('refund_id')
+        refund = get_object_or_404(Refund, id=refund_id)
+        purchase = refund.purchase
+        delivery = purchase.delivery
+        payment = purchase.payment
+
+        try:
+            with transaction.atomic():
+                stripe.Refund.create(
+                    charge=payment.transaction_id,
+                    reason="requested_by_customer"
+                )
+
+                # Обновление статусов
+                refund.status = 'approved'
+                refund.save()
+
+                delivery.status = 'returned'
+                delivery.save()
+
+                payment.status = 'refunded'
+                payment.save()
+
+            # messages.success(request, "Refund approved successfully.")
+        except stripe.error.StripeError as e:
+            messages.error(request, f"Stripe error: {str(e)}")
+
+        return JsonResponse({"accepted": True, "success": True})
+
+
+class RefundDeclineView(SuperUserPassesTestMixin, View):
+    def post(self, request, *args, **kwargs):
+        refund_id = request.POST.get('refund_id')
+        refund = get_object_or_404(Refund, id=refund_id)
+
+        refund.status = 'rejected'
+        refund.save()
+
+        return JsonResponse({"declined": True, "success": True})

@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 from .models import CustomUser, Address, Delivery, Payment, Product, Refund
 from django.views.generic.edit import FormView
 from django import forms
+import time
 
 
 class AuthenticationForm(forms.Form):
@@ -85,6 +86,28 @@ class AddNewProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'description', 'price', 'discount_price','image', 'quantity_on_storage', 'category', 'brand', 'color', 'os', 'built_in_memory', 'screen_diagonal', 'battery_capacity', 'camera', 'processor', 'ram']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter name'}),
+            'description': forms.Textarea(attrs={'class': 'form-new-product', 'placeholder': 'Enter description'}),
+            'price': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter price'}),
+            'discount_price': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter discount price'}),
+            'quantity_on_storage': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter quantity on storage'}),
+            'built_in_memory': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter built-in memory'}),
+            'screen_diagonal': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter screen diagonal'}),
+            'battery_capacity': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter battery capacity'}),
+            'camera': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter camera'}),
+            'processor': forms.TextInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter processor'}),
+            'ram': forms.NumberInput(attrs={'class': 'form-new-product', 'placeholder': 'Enter ram'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].widget.attrs.update({'class': 'form-new-product'})
+        self.fields['brand'].widget.attrs.update({'class': 'form-new-product'})
+        self.fields['color'].widget.attrs.update({'class': 'form-new-product'})
+        self.fields['os'].widget.attrs.update({'class': 'form-new-product'})
+        self.fields['image'].widget.attrs.update({'class': 'form-new-product-file'})
+
 
 class ProductUpdateForm(forms.ModelForm):
     class Meta:
@@ -148,6 +171,8 @@ class RefundForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         purchase = self.purchase
+        time_of_purchase = purchase.time_of_purchase.timestamp()
+        current_time = time.time()
         payment = get_object_or_404(Payment, purchase=purchase)
 
         raise_an_error = False
@@ -159,4 +184,6 @@ class RefundForm(forms.ModelForm):
             raise_an_error = True
         if raise_an_error:
             raise forms.ValidationError("Error occurred")
+        if current_time - time_of_purchase > 1209600:
+            messages.error(self.request, "Sorry, but you can no longer return the product")
         return cleaned_data

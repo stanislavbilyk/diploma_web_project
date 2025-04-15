@@ -7,24 +7,24 @@ Delivery Service page
 {% endblock %}
 
 {% block main %}
+<section class="Central_section">   
+    <form method="post">
+        {% csrf_token %}
+        
+        <h3 class="Delivery_address">Delivery Service</h3>
     
-<form method="post">
-    {% csrf_token %}
+        <div class="form-group Inside_block">
+            <label for="delivery_service">Choose delivery service:</label>
+            <select name="delivery_service" id="delivery_service">
+                {% for service in delivery_services %}
+                    <option value="{{ service.id }}">{{ service.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
     
-    <h3 class="Delivery_address">Delivery Service</h3>
-
-    <div class="form-group">
-        <label for="delivery_service">Choose delivery service:</label>
-        <select name="delivery_service" id="delivery_service">
-            {% for service in delivery_services %}
-                <option value="{{ service.id }}">{{ service.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <button class="Save_address" type="submit">Continue to Payment</button>
-</form>
-
+        <button class="Save_address" type="submit">Continue to Payment</button>
+    </form>
+</section>  
 
 <script src="{% static 'js/transfer.js' %}"></script> 
 {% endblock %}

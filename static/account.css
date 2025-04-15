@@ -151,3 +151,65 @@
 .Logout_link:hover {
     text-decoration: underline;
 }
+
+.Refund_request_button {
+    background: #2980b9;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.4s ease, transform 0.3s;
+}
+
+.Refund_request_button:hover {
+    background: #1abc9c;
+    transform: translateY(-2px);
+}
+
+.Rules {
+    list-style-type: none;
+}
+
+.refund-form {
+    max-width: 500px;
+    margin: 20px auto auto 20px;
+}
+
+.form-reason {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-reason label {
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+textarea.form-control {
+    padding: 10px;
+    font-size: 16px;
+    resize: vertical;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.Refund_button {
+    align-self: flex-start;
+}
+
+.Back_to_main {
+    color: black;
+    font-size: 20px;
+    font-weight: normal;
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+}
+
+.Back_to_main:hover {
+    color: blue;
+    transform: scale(1.1);
+}

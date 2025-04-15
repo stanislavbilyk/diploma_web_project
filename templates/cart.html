@@ -14,7 +14,7 @@ Cart page
         <ul class="Cart_list">
         {% for item in cart_items %}
             <li>
-                <ul class="Cart_items">
+                <ul class="Cart_items Inside_block">
                     <li class="Image_of_item">
                         <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-width: 90px; max-height: 90px">
                     </li>
