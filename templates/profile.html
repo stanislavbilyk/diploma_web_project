@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Profile page
+{% endblock %}
+
+{% block main %}
+
+<div class="Profile_container">
+        <div class="Profile_info">
+            <h2>Profile</h2>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+            <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+        </div>
+        <div class="Account_purchases">
+            <h3>Your Purchases</h3>
+            {% if purchase_list  %}
+                <ul>
+                    {% for purchase_data in purchase_list %}
+                        <li>                            
+                            <p><strong>Date:</strong> {{ purchase_data.purchase.time_of_purchase }}</p>                            
+                            
+                                {% for item in purchase_data.items %}
+                                    <div class="Purchase_item">
+                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                        <div class="Purchase_item_details">
+                                            <p><strong>Product:</strong> {{ item.product.name }}</p>
+                                            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                                            {% if item.product.discount_price %}
+                                               	<p><strong>Price per item:</strong> {{ item.product.discount_price }} CZK</p>                                 
+                                            {% else %}
+                                                <p><strong>Price per item:</strong> {{ item.product.price }} CZK</p>
+                                            {% endif %}
+                                            <p><strong>Total for item:</strong> {{ item.total_price }}CZK</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <p><strong>Amount of purchase:</strong> {{ purchase_data.purchase.payment.amount }}CZK</p>
+                            {% if not purchase_data.purchase.refund %}
+                            <form action="{% url 'refund' purchase_data.purchase.id %}" method="GET">
+                                <button class="Refund_request_button">Request refund</button>
+                            </form>
+                        {% else %}
+                            <p>Refund already requested (Status: {{ purchase_data.purchase.refund.status }})</p>
+                        </li>
+                        
+            {% endif %}
+                    {% endfor %}
+                
+                </ul>
+            {% else %}
+                <p>No purchases found.</p>
+            {% endif %}
+        </div>
+        
+        <a href="{% url 'logout' %}" class="Logout_link">Logout</a>
+    </div>    
+  
+{% endblock %}

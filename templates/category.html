@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Category page
+{% endblock %}
+
+{% block main %}
+    
+<h1 style="margin-left: 150px">{{ category.name }}</h1>
+<p style="margin-left: 150px">{{ category.description }}</p>
+    
+<div class="Our_items">
+    <ul class="List_of_products">
+    {% for product in products %}
+        <li>            
+            <ul class="Card_of_product">                
+                <li class="Wishlist">
+                    <div class="Wishlist_Container" data-product-id="{{ product.pk }}">
+                        <img src="{% static 'img/Like.png' %}" alt="wishlist" class="Wishlist_Icon default">
+                        <img src="{% static 'img/RedLike.png' %}" alt="wishlist" class="Wishlist_Icon active">
+                    </div>
+                </li>
+                <a href="{% url 'product_id' product.pk %}" style="text-decoration: none; color: inherit">
+                <li class="Image_of_item"><img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px; max-height: 160px"></li><br>
+                <li class="Name_of_item">{{ product.name }}</li><br>
+                <li>
+                    <ul class="Price_section">
+                        <li class="Price">{{ product.price }}</li>
+                        <li class="Currency">CZK</li>
+                    </ul>
+                </li>
+                </a>    
+                {% if user.is_authenticated %}
+                <li class="Purchase_section">
+                    <input type="hidden" name="product_id" value="{{ product.pk }}">
+                    <button class="Add_to_card" data-product-id="{{ product.id }}">Buy Now</button>                           
+                </li>            
+                {% endif %}
+            </ul>            
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    
+
+<script src="{% static 'js/slider.js' %}"></script>
+<script src="{% static 'js/carousel.js' %}"></script>
+<script src="{% static 'js/wishlist.js' %}"></script>
+<script src="{% static 'js/anchor.js' %}"></script>     
+    
+{% endblock %}

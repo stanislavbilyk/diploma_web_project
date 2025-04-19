@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block main %}
+
+<div class="Login_container">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="Login_form_group">
+                <label for="id_username">Email/Username</label>
+                {{ form.username }}
+            </div>
+            <div class="Login_form_group">
+                <label for="id_password">Password</label>
+                {{ form.password }}
+            </div>
+            <div class="Login_form_actions">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        <div class="Login_links">
+            <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+        </div>
+</div>    
+    
+    
+{% endblock %}

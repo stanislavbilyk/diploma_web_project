@@ -1,0 +1,46 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+
+{% block title %}
+Admin menu
+{% endblock %}
+
+{% block main %}
+<section class="Admin_menu">    
+    <div class="Main_content">
+    <h1 style="margin-left: 600px">List of products</h1>
+        <ul class="Admin_products">
+        {% for product in product_list %}
+            <li>
+                <a href="{% url 'product_id' product.pk %}" style="text-decoration: none; color: inherit">
+                <ul class="Card_of_admin_products">
+                    <li class="Name_of_item">{{ product.name }}</li><br>
+                    <li class="Image_of_item"><img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px"></li><br>
+                    <li class="Description_of_item">{{ product.description|truncatechars:100 }}</li><br>
+                    {% if product.color %}<li><p>Color: {{ product.color }}</p></li>{% endif %}
+                    {% if product.os %}<li><p>OS: {{ product.os }}</p></li>{% endif %}
+                    {% if product.built_in_memory %}<li><p>Storage: {{ product.built_in_memory }} GB</p></li>{% endif %}
+                    {% if product.screen_diagonal %}<li><p>Display size: {{ product.screen_diagonal }} "</p></li>{% endif %}
+                    {% if product.battery_capacity %}<li><p>Battery capacity: {{ product.battery_capacity }} mAh</p></li>{% endif %}
+                    {% if product.camera %}<li><p>Camera: {{ product.camera }} Mpx</p></li>{% endif %}
+                    {% if product.processor %}<li><p>Processor: {{ product.processor }}</p></li>{% endif %}
+                    {% if product.ram %}<li><p>RAM: {{ product.ram }}</p></li>{% endif %}
+                    <li class="Quantity_of_item">In stock   {{ product.quantity_on_storage }}</li>
+                    <li>
+                        <ul class="Price_section">
+                            <li class="Price">{{ product.price }}</li>
+                            <li class="Currency">CZK</li>
+                        </ul>
+                    </li>
+                    <li>                    
+                        <a href="{% url 'product_update' product.pk %}" class="Update_link">Update</a>
+                    </li>
+                </ul>
+                </a>                
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}

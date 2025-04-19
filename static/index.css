@@ -1,0 +1,772 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+    width: 100vw;
+    margin: 0;
+    background-color: white;
+    overflow-x: hidden;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 35px;
+    box-sizing: border-box;
+    gap: 15px;
+    height: auto;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+header a,
+header form {
+    display: flex;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+header a {
+    color: black;
+    font-size: 20px;
+    font-weight: normal;
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+header a:hover {
+    color: blue;
+    transform: scale(1.1);
+}
+
+.left-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-container {
+    width: 300px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search-container:after {content:""; clear:both; display:table}
+
+.search-form {
+    width: auto;
+    float: right;
+    margin-right: 30px;
+    position: relative;
+}
+
+.search-input {
+    width: 250px;
+    height: 42px;
+    padding-left: 15px;
+    border-radius: 42px;
+    border: 2px solid #324b4e;
+    background: #eefafd;
+    outline: none;
+    position: relative;
+    transition: .3s linear;
+}
+
+.search-input:focus {
+    width: 300px;
+}
+
+.search-button {
+    width: 42px;
+    height: 42px;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.search-button:before{
+    content: "\f002";
+    font-family: FontAwesome;
+    color: #324b4e;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    position: static;
+    height: auto;
+    width: auto;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.hamburger-menu {
+    flex-direction: column;
+    gap: 5px;
+    display: none;
+}
+
+.close-btn {
+  display: none;
+}
+
+.hamburger-menu span {
+    border-radius: 5px;
+    display: block;
+    width: 50px;
+    height: 5px;
+    background-color: black;
+}
+
+.top_market {
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.top_market img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.div6 {
+    display: flex;
+    justify-content: center;
+}
+
+.div8 {
+    display: flex;
+    justify-content: center;
+}
+
+.Categories_section {
+    /*width: 1150px;*/
+    margin: 80px auto;
+    max-width: 1200px;
+}
+
+.Title_of_Categories {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.Categories_container {
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+}
+
+.Categories_wrapper {
+    display: flex;
+    gap: 32px;
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+}
+
+.List_of_categories {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 32px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.List_of_categories a:hover {
+    color: blue;
+}
+
+.Block_of_category {
+    display: flex;
+    flex-direction: column;
+    width: 160px;
+    height: 128px;
+    gap: 32px;
+    border-radius: 15px;
+    background-color: rgba(237, 237, 237, 1);
+}
+
+.Category {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+}
+
+.Category_item {
+    flex: 0 0 calc(100% / 4);
+}
+
+.Items {
+    width: 100%;
+    /*display: flex;*/
+}
+
+.Img_of_category {
+    mix-blend-mode: multiply;
+}
+
+.Arrows {
+    display: flex;
+    gap: 15px;
+    font-size: 25px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Arrow {
+    padding: 5px 10px;
+    background: #eee;
+    border-radius: 50%;
+}
+
+.Arrow:hover {
+    background: #ccc;
+}
+
+.CarouselContainer {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.CarouselWrapper {
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+}
+
+.Carousel {
+    display: flex;
+    gap: 16px;
+    transition: transform 0.5s ease-in-out;
+    will-change: transform;
+    align-items: center;
+}
+
+.Carousel a img {
+    width: 80vw;
+    max-width: 800px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: all 0.5s ease-in-out;
+}
+
+.Carousel a:not(.active) img {
+    opacity: 0.5;
+    transform: scale(0.85);
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.Carousel a.active img {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+.Our_items {
+    width: 100%;
+    margin: 100px 100px 100px 0;
+    flex-grow: 1;
+}
+
+.List_of_products {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 240px);
+    gap: 50px;
+    justify-content: center;
+}
+
+.List_of_products_page {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(3, 270px);
+    gap: 50px;
+    justify-content: center;
+    flex-grow: 1;
+    align-items: stretch;
+}
+
+.List_of_products_page li .Card_of_product{
+    height: 100%;
+    /*justify-content: space-between;*/
+    /*max-width: 400px;*/
+}
+
+.Card_of_product {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    background-color: rgba(246, 246, 246, 1);
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    padding-top: 60px;
+    border-radius: 9px;
+}
+
+
+
+.Wishlist {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    left: auto;
+}
+
+.Wishlist_Container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    padding-top: 10px;
+}
+
+.Wishlist_Icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.Wishlist_Icon.default {
+    opacity: 1;
+    color: gray;
+}
+
+.Wishlist_Icon.active {
+    opacity: 0;
+    color: red;
+}
+
+.Wishlist_Container.active .Wishlist_Icon.default {
+    opacity: 0;
+}
+
+.Wishlist_Container.active .Wishlist_Icon.active {
+    opacity: 1;
+}
+
+.Image_of_item {
+    mix-blend-mode: multiply;
+}
+
+.Name_of_item {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.Bottom_of_item {
+    list-style-type: none;
+}
+
+.Price_section {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: auto;
+}
+
+.Price {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.Currency {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.Add_to_card {
+    width: 188px;
+    height: 48px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    background-color: #ff7b00;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Add_to_card:hover {
+    background-color: white;
+    color: #ff7b00;
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.Add_to_card:active {
+    transform: scale(0.95);
+}
+
+.Buy {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.Section_of_market {
+    display: flex;
+    width: 100%;
+}
+
+.List_of_market {
+    display: flex;
+    width: 100%;
+    list-style-type: none;
+    align-items: stretch;
+}
+
+.Market {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* равномерно распределяет */
+    height: 100%;
+    max-width: 400px;
+    list-style-type: none;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.Market_image {
+    width: 100%;
+    max-width: 341px;
+    height: auto;
+}
+
+.Market_image img {
+    width: 100%;
+    height: auto;
+}
+
+.Market_tittle {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.Market_description {
+    padding: 20px;
+}
+
+.iPad_Pro {
+    background-color: rgba(249, 249, 249, 1);
+}
+
+.Samsung_Galaxy {
+    background-color: rgba(234, 234, 234, 1);
+}
+
+.Macbook_Pro {
+    background-color: rgba(44, 44, 44, 1);
+    color: white;
+}
+
+.Shop_now {
+    width: 191px;
+    height: 56px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bolder;
+    font-size: 16px;
+    color: black;
+    background-color: #ff7b00;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Shop_now:hover {
+    background-color: white;
+    color: #ff7b00;
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.Shop_now:active {
+    transform: scale(0.95);
+}
+
+.Macbook_Pro .Market_purchase_section .Shop_now {
+    color: white;
+    background-color: #ff7b00;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Macbook_Pro .Shop_now:hover {
+    background-color: white;
+    color: #ff7b00;
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.Macbook_Pro .Shop_now:active {
+    transform: scale(0.95);
+}
+
+.Discounts_section {
+    width: 100%;
+    margin: 20px;
+}
+
+.List_of_discounts {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 240px);
+    gap: 50px;
+    justify-content: center;
+}
+
+.Discount_price_section {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: auto;
+}
+
+.Old_price .Price {
+    text-decoration: line-through;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center; /* Выравнивание по центру */
+    gap: 10px;
+    margin-right: 0; /* Убираем смещение вправо */
+    clear: both; /* Очищает обтекание */
+    width: 100%; /* Занимает всю ширину */
+    padding-top: 20px; /* Отступ, чтобы не прилипала к товарам */
+}
+
+.Big_Summer_Sale {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* для мобильных лучше column, иначе элементы в строку */
+  align-items: center; /* по желанию */
+  overflow: hidden; /* чтобы ничего не вылезало */
+}
+
+.Img_Summer_Sale {
+  width: 100%;
+  max-width: 100%;
+}
+
+.Img_Summer_Sale img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.Big_Summer_Sale a {
+    position: relative;
+}
+
+.Big_Summer_Sale a .Shop_now {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -200%); /* Центр кнопки совпадёт с центром родителя */
+    color: white;
+    background-color: #ff7b00;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Big_Summer_Sale a .Shop_now:hover {
+    background-color: white;
+    color: #ff7b00;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.foot_section {
+    width: 100%;
+    display: flex;
+    background-color: black;
+    color: white;
+    padding: 50px;
+    gap: 100px;
+}
+
+.AboutUs, .Services, .BuyerAssistance {
+    flex: 1;
+}
+
+.AboutUs {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.Media {
+    list-style-type: none;
+    display: flex;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.Services {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+}
+
+.Title_footer {
+    font-weight: bold;
+    font-size: 20px;
+
+}
+
+.BuyerAssistance {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+}
+
+.Central_section {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.Inside_block {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+.Address_title {
+    margin: 20px 0 20px;
+}
+
+.Company_address {
+    font-weight: bold;
+}
+
+
+
+@media (max-width: 834px) {
+    header {
+        width: 100%;
+    }
+    .left-header img {
+        width: 50px;
+        height: auto;
+    }
+    .search-container {
+        width: 200px;
+    }
+    .search-input {
+        width: 150px;
+    }
+    .search-input:focus {
+        width: 200px;
+    }
+    .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+    }
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 300px;
+        background-color: #fff;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px 20px;
+        gap: 30px;
+        transition: right 0.3s ease-in-out;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+    .nav-links.show {
+        right: 0;
+  }
+    .user-greeting {
+        display: none;
+  }
+    .close-btn {
+        display: block;
+        font-size: 30px;
+        align-self: flex-start;
+        cursor: pointer;
+        margin-bottom: 20px;
+  }
+    .List_of_products, .List_of_discounts {
+        grid-template-columns: repeat(2, 240px);
+    }
+    .List_of_market {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        gap: 30px;
+    }
+    .Market_image {
+        max-width: 341px;
+        max-height: 341px;
+}
+    .Big_Summer_Sale a .Shop_now {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        margin-top: 0;
+  }
+    .foot_section {
+        flex-direction: column;
+    }
+}
+

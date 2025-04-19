@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Wishlist
+{% endblock %}
+
+{% block main %}
+
+<section class="Wishlist_section Central_section">
+
+    <h3 style="margin: 20px 0 20px 20px">Wishlist</h3>   
+    <ul class="Wishlist_Wrapper">
+    {% for item in wishlist_items %}
+        <li>        
+            <ul class="Wishlist_item Inside_block">
+                <a href="{% url 'product_id' item.product.pk %}" style="text-decoration: none; color: inherit">
+                    <li class="Image_of_wishlist">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-width: 90px; max-height: 90px">
+                    </li>
+                </a>
+                <li class="Items_name">{{ item.product.name }}</li>
+                <li class="Items_price">{{ item.product.price }} CZK </li>
+                
+                <li>
+                    <button class="Wishlist_delete" data-product-id="{{ item.product.id }}">Delete</button>
+                </li>
+            </ul>
+            
+        </li  {% endfor %}
+    </ul>
+
+</section>     
+    
+
+<script src="{% static 'js/wishlist.js' %}?v={{ STATIC_VERSION }}"></script>
+{% endblock %}

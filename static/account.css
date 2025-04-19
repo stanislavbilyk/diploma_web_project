@@ -1,0 +1,215 @@
+.Login_container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.Login_form_group {
+    margin-bottom: 15px;
+}
+.Login_form_group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.Login_form_group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.Login_form_actions {
+    margin-top: 20px;
+}
+.Login_form_actions button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Login_form_actions button:hover {
+    background-color: #0056b3;
+}
+.Login_links {
+    margin-top: 20px;
+    text-align: center;
+}
+.Login_links a {
+    color: #007bff;
+    text-decoration: none;
+}
+.Login_links a:hover {
+    text-decoration: underline;
+}
+
+.Register_container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.Register_form_group {
+    margin-bottom: 15px;
+}
+.Register_form_group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.Register_form_group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.Register_form_actions {
+    margin-top: 20px;
+}
+.Register_form_actions button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Register_form_actions button:hover {
+    background-color: #0056b3;
+}
+.Register_links {
+    margin-top: 20px;
+    text-align: center;
+}
+.Register_links a {
+    color: #007bff;
+    text-decoration: none;
+}
+.Register_links a:hover {
+    text-decoration: underline;
+}
+
+.Profile_container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+.Profile_info {
+    margin-bottom: 20px;
+}
+.Profile_info h2 {
+    margin-bottom: 10px;
+}
+.Profile_info p {
+    margin: 5px 0;
+}
+.Account_purchases {
+    margin-top: 20px;
+}
+.Account_purchases h3 {
+    margin-bottom: 10px;
+}
+.Account_purchases ul {
+    list-style-type: none;
+    padding: 0;
+}
+.Account_purchases ul li {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+.Purchase_item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.Purchase_item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+.Purchase_item_details {
+    flex: 1;
+}
+.Purchase_item_details p {
+    margin: 5px 0;
+}
+.Logout_link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+.Logout_link:hover {
+    text-decoration: underline;
+}
+
+.Refund_request_button {
+    background: #2980b9;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.4s ease, transform 0.3s;
+}
+
+.Refund_request_button:hover {
+    background: #1abc9c;
+    transform: translateY(-2px);
+}
+
+.Rules {
+    list-style-type: none;
+}
+
+.refund-form {
+    max-width: 500px;
+    margin: 20px auto auto 20px;
+}
+
+.form-reason {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-reason label {
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+textarea.form-control {
+    padding: 10px;
+    font-size: 16px;
+    resize: vertical;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.Refund_button {
+    align-self: flex-start;
+}
+
+.Back_to_main {
+    color: black;
+    font-size: 20px;
+    font-weight: normal;
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+}
+
+.Back_to_main:hover {
+    color: blue;
+    transform: scale(1.1);
+}

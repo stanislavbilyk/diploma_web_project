@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Address page
+{% endblock %}
+
+{% block main %}
+
+    
+<section class="Central_section"> 
+    <form method="post">
+        {% csrf_token %}
+        
+        <h3 class="Delivery_address">Delivery Address</h3>
+    
+        <div class="form-group Inside_block">
+            <label for="id_country">Country:</label>
+            {{ form.country }}
+        </div>
+    
+        <div class="form-group Inside_block">
+            <label for="id_postal_code">Postal code:</label>
+            {{ form.postal_code }}
+        </div>
+    
+        <div class="form-group Inside_block">
+            <label for="id_city">City:</label>
+            {{ form.city }}
+        </div>
+    
+        <div class="form-group Inside_block">
+            <label for="id_street">Street:</label>
+            {{ form.street }}
+        </div>
+    
+        <div class="form-group Inside_block">
+            <label for="id_house_number">House number:</label>
+            {{ form.house_number }}
+        </div>
+    
+        <div class="form-group Inside_block">
+            <label for="id_phone_number">Phone number:</label>
+            {{ form.phone_number }}
+        </div>   
+    
+        <button class="Save_address" type="submit">Save</button>
+    </form>
+</section>   
+
+ 
+{% endblock %}

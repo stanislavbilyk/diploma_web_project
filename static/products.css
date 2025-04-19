@@ -1,0 +1,504 @@
+.Container_section {
+    width: 100%;
+    display: flex;
+}
+
+.Sidebar {
+    width: 250px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-right: 1px solid #ddd;
+}
+
+.Sidebar h3 {
+    margin-bottom: 10px;
+}
+.Sidebar form p {
+    margin-bottom: 10px;
+}
+.Sidebar button {
+    margin-top: 10px;
+    padding: 5px 10px;
+}
+
+.Filter_container {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.Filter_item {
+    margin-bottom: 10px;
+}
+
+.Filter_header {
+    width: 100%;
+    background: #ddd;
+    border: none;
+    padding: 8px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Filter_options {
+    display: none;
+    padding: 5px;
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.Filter_options label {
+    display: block;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.Filter_arrow {
+    transition: 0.3s;
+}
+
+.active .Filter_arrow {
+    transform: rotate(180deg);
+}
+
+#price_range {
+    width: 100%;
+}
+
+#price_value {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.Cart_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+
+.Shopping_cart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 20px 20px 20px 0;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.Cart_list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 50px;
+}
+
+.Cart_list li {
+    justify-content: center;
+    align-content: center;
+}
+
+.Minus, .Plus {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.Cart_items {
+    display: flex;
+    list-style-type: none;
+    gap: 20px;
+}
+
+.Quantity_section {
+    display: flex;
+    list-style-type: none;
+    gap: 10px;
+}
+
+.Items_name {
+    font-size: 16px;
+    max-width: 200px;
+}
+
+.Quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(217, 217, 217, 1);
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Order_summary {
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    /*border: 2px solid rgba(217, 217, 217, 1);*/
+    /*border-radius: 10px;*/
+    margin: 20px 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.Price_container {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+.Price_excl_VAT, .Total_price {
+    display: flex;
+    gap: 10px;
+}
+
+.Checkout {
+    width: 408px;
+    height: 48px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 200px;
+}
+
+.Delivery_address {
+    margin: 20px 20px 40px 40px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /*margin-bottom: 15px;*/
+    /*max-width: 600px;*/
+}
+
+.form-group label {
+    flex-shrink: 0;
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    flex-grow: 1;
+    max-width: 500px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.Save_address {
+    width: 320px;
+    height: 48px;
+    margin: 10px 0 10px 100px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Save_address:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.Payment_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 20px;
+}
+
+.Summary {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    /*margin: 20px 20px 20px 0;*/
+}
+
+.Payment_list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+    margin: 20px 0 0 20px;
+}
+
+.Payment {
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border: 2px solid rgba(217, 217, 217, 1);
+    border-radius: 10px;
+    margin: 20px 50px;
+    padding: 20px 0 0 50px;
+    background-color: #f9f9f9;
+}
+
+.Payment_form {
+    width: 100%;
+}
+
+.Card_block {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+    column-gap: 15px;
+    margin-bottom: 15px;
+
+    width: 100%;           /* ✅ обязательно */
+    box-sizing: border-box;
+}
+
+.Card_block > div {
+    background-color: white;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+
+    min-height: 40px;
+    width: 100%;           /* ✅ поле растягивается */
+    box-sizing: border-box;
+}
+
+
+.Payment_container {
+    display: flex;
+    list-style-type: none;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.Payment_form p {
+    margin-bottom: 20px;
+}
+
+.Pay_now {
+    width: 100%;
+    height: 48px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.Pay_now:hover {
+    background-color: #37453f;
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.Payment_form input,
+.Payment_form select {
+    width: 100%;
+    flex-grow: 1;
+    max-width: 300px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 15px;
+    box-sizing: border-box;
+}
+
+.Wishlist_section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.Wishlist_Wrapper {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 50px;
+    margin: 20px 0 20px 40px;
+}
+
+.Wishlist_Wrapper li {
+    justify-content: center;
+    align-content: center;
+}
+
+.Wishlist_item {
+    display: flex;
+    list-style-type: none;
+    gap: 50px;
+}
+
+.Product_section {
+    width: 100%;
+    display: flex;
+    gap: 50px;
+    margin: 50px;
+}
+
+.Product_list {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+    margin: 20px 0 20px 40px;
+}
+
+
+.Action_panel {
+    width: 100%;
+    display: flex;
+    list-style-type: none;
+    gap: 20px;
+}
+
+.Wishlist_button {
+    width: 250px;
+    height: 50px;
+    color: black;
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid darkgrey;
+    font-weight: bold;
+}
+
+.Wishlist_button:hover {
+    background-color: lavender;
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.Cart_button {
+    width: 250px;
+    height: 50px;
+    color: white;
+    background-color: black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    border: none;
+    font-weight: bold;
+}
+
+.Cart_button:hover {
+    background-color: #37453f;
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.Tech_specifications {
+    display: flex;
+    flex-direction: column;
+    margin: 50px 50px 50px 100px;
+}
+
+.popup {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        z-index: 1000;
+        transition: opacity 0.5s;
+    }
+
+.Wishlist_delete, .Delete {
+    background: none;
+    color: #333;
+    border: 2px solid #333;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.Wishlist_delete:hover, .Delete:hover {
+    transform: scale(1.1);
+}
+
+.breadcrumbs {
+    margin: 10px auto 20px 150px;
+}
+
+.Popular_products img {
+    width: 100%;
+    height: 100%;
+}
+
+
+@media (max-width: 834px) {
+    .Sidebar {
+        width: 100px;
+    }
+    .Filter_container {
+        width: 100px;
+    }
+    .List_of_products_page {
+        grid-template-columns: repeat(2, 100px);
+    }
+    .Add_to_card_button {
+        width: 130px;
+    }
+    .Product_section {
+        flex-direction: column;
+    }
+    .Cart_container {
+        flex-direction: column;
+    }
+    .Payment_container {
+        flex-direction: column;
+    }
+}

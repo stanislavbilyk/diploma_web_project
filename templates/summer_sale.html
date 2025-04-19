@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Product's page
+{% endblock %}
+
+{% block main %}
+
+<nav class="breadcrumbs">
+    {% for category in breadcrumbs %}
+        <a href="{% url 'category_id' category.pk %}">{{ category.name }}</a> <span>&rsaquo;</span>        
+        {% if not forloop.last %} > {% endif %}
+    {% endfor %}
+    {% if brand %}
+        <a href="{% url 'brand_id' brand.pk %}">{{ brand.name }}</a> <span>&rsaquo;</span> 
+    {% endif %}
+    {% if product %}
+    <a href="{% url 'product_id' product.pk %}">{{ product.name }}</a>
+    {% endif %}
+</nav>    
+
+<section class="Container_section">
+    <div class="Sidebar">
+    <h3>Filters</h3>
+    <form method="get" id="Filter_form">
+        <div class="Filter_container">            
+            <div class="Filter_item">
+                <label>Price:</label>
+                <input type="range" id="price_range" min="0" max="200000" step="1000">
+                <span id="price_value">0 - 200000</span>
+                <input type="hidden" name="price_min" id="price_min" value="0">
+                <input type="hidden" name="price_max" id="price_max" value="200000">
+            </div>
+            
+            <div class="Filter_item">
+                <button type="button" class="Filter_header">Category<span class="Filter_arrow">▼</span></button>
+                <div class="Filter_options">
+                    {% for category in filter.form.category.field.queryset %}
+                        <label>
+                            <input type="checkbox" name="category" value="{{ category.id }}">
+                            {{ category.name }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="Filter_item">
+                <button type="button" class="Filter_header">Brand<span class="Filter_arrow">▼</span></button>
+                <div class="Filter_options">
+                    {% for brand in filter.form.brand.field.queryset %}
+                        <label>
+                            <input type="checkbox" name="brand" value="{{ brand.id }}">
+                            {{ brand.name }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>        
+                
+            <div class="Filter_item">
+                    <button type="button" class="Filter_header">OS<span class="Filter_arrow">▼</span></button>
+                    <div class="Filter_options">
+                        {% for os in filter.form.os.field.queryset %}
+                            <label>
+                                <input type="checkbox" name="os" value="{{ os.id }}">
+                                {{ os.name }}
+                            </label>
+                        {% endfor %}
+                    </div>
+            </div>        
+                
+            <div class="Filter_item">
+                    <button type="button" class="Filter_header">Color<span class="Filter_arrow">▼</span></button>
+                    <div class="Filter_options">
+                        {% for color in filter.form.color.field.queryset %}
+                            <label>
+                                <input type="checkbox" name="color" value="{{ color.id }}">
+                                {{ color.name }}
+                            </label>
+                        {% endfor %}
+                    </div>
+            </div>        
+            
+            <div class="Filter_item">
+                <button type="button" class="Filter_header">Memory<span class="Filter_arrow">▼</span></button>
+                <div class="Filter_options">
+                    {% for memory in unique_memory_values %}
+                        <label>
+                            <input type="checkbox" name="built_in_memory" value="{{ memory }}">
+                            {{ memory }} GB
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>        
+            
+            <div class="Filter_item">
+                <button type="button" class="Filter_header">Camera<span class="Filter_arrow">▼</span></button>
+                <div class="Filter_options">
+                    {% for camera in unique_camera_values %}
+                        <label>
+                            <input type="checkbox" name="camera" value="{{ camera }}">
+                            {{ camera }} Mpx
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>        
+            
+            <div class="Filter_item">
+                <button type="button" class="Filter_header">RAM<span class="Filter_arrow">▼</span></button>
+                <div class="Filter_options">
+                    {% for ram in unique_ram_values %}
+                        <label>
+                            <input type="checkbox" name="ram" value="{{ ram }}">
+                            {{ ram }} Mpx
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    
+        
+        <button type="submit">Apply filter</button>
+    </form>
+</div>
+
+    <div class="Our_items">
+        <ul class="List_of_products_page">
+        {% for product in discounted_products %}
+            <li>            
+                <ul class="Card_of_product">                
+                    <li class="Wishlist">
+                        <div class="Wishlist_Container" data-product-id="{{ product.pk }}" data-in-wishlist="{% if product.pk in wishlist_items %}true{% else %}false{% endif %}">
+                            <img src="{% static 'img/Like.png' %}" alt="wishlist" class="Wishlist_Icon default {% if product.pk in wishlist_items %}hidden{% endif %}">
+                            <img src="{% static 'img/RedLike.png' %}" alt="wishlist" class="Wishlist_Icon active {% if product.pk not in wishlist_items %}hidden{% endif %}">
+                        </div>
+                    </li>
+                    <a href="{% url 'product_id' product.pk %}" style="text-decoration: none; color: inherit">
+                    <li class="Image_of_item"><img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px; max-height: 160px"></li><br>
+                    <li class="Name_of_item">{{ product.name }}</li><br>
+                    <li>
+                    <ul class="Price_section Old_price">
+                        <li class="Price">{{ product.price }} CZK</li>                            
+                    </ul>
+                    </li>
+                    <li>
+                        <ul class="Discount_price_section">
+                            <li class="Price">{{ product.discount_price }}</li>
+                            <li class="Currency">CZK</li>
+                        </ul>
+                    </li>   
+                    </a>    
+                    {% if user.is_authenticated %}
+                    <li class="Purchase_section">
+                        <input type="hidden" name="product_id" value="{{ product.pk }}">
+                        <button class="Add_to_card" data-product-id="{{ product.id }}">Buy Now</button>                           
+                    </li>            
+                    {% endif %}
+                </ul>            
+            </li>
+        {% endfor %}
+        </ul>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="current">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    </div>
+    
+</section>
+    
+<script src="{% static 'js/wishlist.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/filters.js' %}"></script>    
+    
+{% endblock %}

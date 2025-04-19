@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Success refund page
+{% endblock %}
+
+{% block main %}
+<section class="Central_section">
+        <div class="Inside_block">
+{% if messages %}
+    <ul class="messages" style="list-style-type: none">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    
+            <h1>You have requested a refund. Our specialists will check all the information as soon as possible.</h1>
+        
+
+{% endif %}
+<a href="/" class="Back_to_main">Back to Main page</a>
+ </div>    
+    </section>   
+    
+{% endblock %}

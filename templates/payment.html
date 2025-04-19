@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Address page
+{% endblock %}
+
+{% block main %}
+    
+<section class="Payment_container">
+    <div class="Summary Central_section">
+        {% if purchase %}
+            <h3>Summary</h3>   
+            <ul class="Cart_list">
+                {% for item in cart_items %}
+                    <li>
+                        <ul class="Cart_items Inside_block">
+                            <li class="Image_of_item">
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-width: 50px; max-height: 50px">
+                            </li>
+                            <li class="Items_name">{{ item.product.name }}</li>
+                            <li>
+                                {% if item.product.discount_price %}
+                                	{{ item.product.discount_price }}                                 
+                                {% else %}
+                                    {{ item.product.price }}
+                                {% endif %}
+                            </li>
+                            <li>
+                                <span> x </span>
+                            </li>
+                            <li>
+                                {{ item.quantity }}
+                            </li>
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+            <ul class="Price_container">
+            <li class="Price_excl_VAT">
+                <span class="Cart_price" style='width: 300px;'>Total excl. VAT</span> 
+                <span class="price_value" style='padding-left:20px;'>{{ price_excl_VAT }}</span>
+                <span class="Cart_price">CZK</span>
+            </li>
+            <li class="Total_price">
+                <span class="Cart_price" style='width: 300px;'>Total price with VAT</span> 
+                <span class="price_value" style='padding-left:20px;'>{{ total_price }}</span>
+                <span class="Cart_price">CZK</span>
+            </li>            
+        </ul>
+        {% endif %}
+    </div>
+    
+    <div class="Payment">
+        <h3>Payment</h3>
+        <ul class="Payment_list">
+            <li class="Price_excl_VAT">
+                <img src="{% static 'img/credit_card.png' %}" alt="credit_card">
+            </li>
+            <li class="Total_price">
+                <form method="post" class="Payment_form" id="payment-form">
+                    {% csrf_token %}
+                    <div class="Inside_block Card_block">
+                        <label for="card-number">Card Number</label>
+                        <div id="card-number"></div>
+                    </div>
+                    
+                    <div class="Inside_block Card_block">
+                        <label for="card-expiry">Expiration Date</label>
+                        <div id="card-expiry"></div>
+                    </div>
+                    
+                    <div class="Inside_block Card_block">
+                        <label for="card-cvc">CVC</label>
+                        <div id="card-cvc"></div>
+                    </div>
+                    
+                    <div id="card-errors" role="alert"></div>
+                
+                    <button type="submit" class="Pay_now" id="submit-button">Pay Now</button>
+                </form>                
+            </li>            
+        </ul>        
+    </div>
+</section>
+
+<div id="popup-message" class="popup">
+    <p id="popup-text"></p>
+</div>
+    
+<script src="https://js.stripe.com/v3/"></script> 
+<script src="{% static 'js/payment.js' %}"></script>    
+{% endblock %}
