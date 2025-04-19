@@ -477,3 +477,28 @@
     width: 100%;
     height: 100%;
 }
+
+
+@media (max-width: 834px) {
+    .Sidebar {
+        width: 100px;
+    }
+    .Filter_container {
+        width: 100px;
+    }
+    .List_of_products_page {
+        grid-template-columns: repeat(2, 100px);
+    }
+    .Add_to_card_button {
+        width: 130px;
+    }
+    .Product_section {
+        flex-direction: column;
+    }
+    .Cart_container {
+        flex-direction: column;
+    }
+    .Payment_container {
+        flex-direction: column;
+    }
+}

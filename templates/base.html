@@ -15,32 +15,42 @@
 <body>
 
 <header>
-        {% if user.is_superuser %}
-        <a href="{% url 'admin_menu' %}"><img src="{% static 'img/admin.png' %}" alt="Admin"></a>
-        {% endif %}
-        <a href="{% url 'main' %}" class="Logo"><img src="{% static 'img/Logo.jpg' %}" alt="Logo"></a>
-        <div class="search-container">
-            <form action="{% url 'search_products' %}" method="get" class="search-form">                
-                <input class="search-input" type="text" name="query" placeholder="Search product..." value="{{ request.GET.query }}">
-                <button type="submit" class="search-button"></button>
-            </form>
+        <div class="left-header">
+            {% if user.is_superuser %}
+                <a href="{% url 'admin_menu' %}"><img src="{% static 'img/admin.png' %}" alt="Admin"></a>
+            {% endif %}
+            <a href="{% url 'main' %}" class="Logo"><img src="{% static 'img/Logo.jpg' %}" alt="Logo"></a>
         </div>
-        <a href="{% url 'main' %}">Home</a>
-        <a href="{% url 'products' %}">Catalog</a>
-        <a href="{% url 'about' %}">About</a>
-        <a href="{% url 'contact_us' %}">Contact us</a>
-        {% if user.is_authenticated %}
-        <a href="{% url 'wishlist' %}"><img src="{% static 'img/Vector.jpg' %}" alt="Wishlist"></a>
-        <a href="{% url 'cart' %}"><img src="{% static 'img/Cart.jpg' %}" alt="Cart"><span id="cart-count">0</span></a>        
-        <a href="{% url 'profile' %}"><img src="{% static 'img/Login.jpg' %}" alt="Profile"></a>
-        Hello, {{ user.first_name }}
-        <form method="post" action="{% url 'logout' %}" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 20px">Logout</button>
-        </form>
-        {% else %}
-        <a href="{% url 'login' %}"><img src="{% static 'img/log_in.png' %}" alt="Login"></a>
-        {% endif %}        
+            <div class="search-container">
+                <form action="{% url 'search_products' %}" method="get" class="search-form">                
+                    <input class="search-input" type="text" name="query" placeholder="Search product..." value="{{ request.GET.query }}">
+                    <button type="submit" class="search-button"></button>
+                </form>
+        </div>
+        <nav class="nav-links" id="navLinks">
+            <div class="close-btn" id="closeBtn">&times;</div>
+            <a href="{% url 'main' %}">Home</a>
+            <a href="{% url 'products' %}">Catalog</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'contact_us' %}">Contact us</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'wishlist' %}"><img src="{% static 'img/Vector.jpg' %}" alt="Wishlist"></a>
+            <a href="{% url 'cart' %}"><img src="{% static 'img/Cart.jpg' %}" alt="Cart"><span id="cart-count">0</span></a>        
+            <a href="{% url 'profile' %}"><img src="{% static 'img/Login.jpg' %}" alt="Profile"></a>
+            <span class="user-greeting">Hello, {{ user.first_name }}</span>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 20px">Logout</button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}"><img src="{% static 'img/log_in.png' %}" alt="Login"></a>
+            {% endif %}
+        </nav>
+        <div class="hamburger-menu" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
     </header>
 <main>    
     {% block main %} {% endblock %}
@@ -92,6 +102,20 @@
             cartCounter.hide();
         }
     });
+    
+    document.addEventListener("DOMContentLoaded", function () {
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("navLinks");
+    const closeBtn = document.getElementById("closeBtn");
+
+    hamburger.addEventListener("click", function () {
+      navLinks.classList.add("show");
+    });
+
+    closeBtn.addEventListener("click", function () {
+      navLinks.classList.remove("show");
+    });
+  });
 </script>
 </body>
 </html>

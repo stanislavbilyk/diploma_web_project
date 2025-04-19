@@ -115,50 +115,46 @@ Main page
     
 <div class="Section_of_market">
     <ul class="List_of_market">
-        <li>
-            <ul class="Market Popular_product">
-                <li class="Market_image"><img src="{% static 'img/Popular_products.png' %}" alt="Popular_products"></li>
-                <li class="Market_tittle">Popular product</li>
-                <li class="Market_description">Discover our most popular product, loved by thousands! With cutting-edge technology, sleek design, and unmatched performance, it’s the perfect choice for those who want the best. Don’t miss out—experience innovation today!</li>
+        <li class="Market Popular_product">            
+                <div class="Market_image"><img src="{% static 'img/Popular_products.png' %}" alt="Popular_products"></div>
+                <div class="Market_tittle">Popular product</div>
+                <div class="Market_description">Discover our most popular product, loved by thousands! With cutting-edge technology, sleek design, and unmatched performance, it’s the perfect choice for those who want the best. Don’t miss out—experience innovation today!</div>
                 <a href="{% url 'popular_products' %}">
-                    <li class="Market_purchase_section">                    
+                    <div class="Market_purchase_section">                    
                         <button class="Shop_now">Shop Now</button>                           
-                    </li>
-                </a>    
-            </ul></li>
-        <li>
-            <ul class="Market iPad_Pro">
-                <li class="Market_image"><img src="{% static 'img/iPad_Pro.png' %}" alt="iPad_Pro"></li>
-                <li class="Market_tittle">iPad Pro</li>
-                <li class="Market_description">Unleash your creativity with the all-new iPad Pro! Designed for power and portability, it delivers stunning visuals, pro-level performance, and endless possibilities. Work, play, and create like never before!</li>
+                    </div>
+                </a>            
+        </li>
+        <li class="Market iPad_Pro">            
+                <div class="Market_image"><img src="{% static 'img/iPad_Pro.png' %}" alt="iPad_Pro"></div>
+                <div class="Market_tittle">iPad Pro</div>
+                <div class="Market_description">Unleash your creativity with the all-new iPad Pro! Designed for power and portability, it delivers stunning visuals, pro-level performance, and endless possibilities. Work, play, and create like never before!</div>
                 <a href="{% url 'product_id' pk=iPadPro.pk %}">
-                    <li class="Market_purchase_section">                    
+                    <div class="Market_purchase_section">                    
                         <button class="Shop_now">Shop Now</button>                           
-                    </li>
+                    </div>
                 </a>
-            </ul></li>
-        <li>
-            <ul class="Market Samsung_Galaxy">
-                <li class="Market_image"><img src="{% static 'img/Samsung_Galaxy.png' %}" alt="Samsung_Galaxy"></li>
-                <li class="Market_tittle">Samsung Galaxy</li>
-                <li class="Market_description">Experience the future of mobile technology with Samsung Galaxy. Stunning display, lightning-fast speed, and intelligent features redefine what a smartphone can do. Elevate your everyday with the best in class!</li>
+            </li>
+        <li class="Market Samsung_Galaxy">            
+                <div class="Market_image"><img src="{% static 'img/Samsung_Galaxy.png' %}" alt="Samsung_Galaxy"></div>
+                <div class="Market_tittle">Samsung Galaxy</div>
+                <div class="Market_description">Experience the future of mobile technology with Samsung Galaxy. Stunning display, lightning-fast speed, and intelligent features redefine what a smartphone can do. Elevate your everyday with the best in class!</div>
                 <a href="{% url 'product_id' pk=SamsungGalaxy.pk %}">
-                    <li class="Market_purchase_section">                    
+                    <div class="Market_purchase_section">                    
                         <button class="Shop_now">Shop Now</button>                           
-                    </li>
+                    </div>
                 </a>
-            </ul></li>
-        <li>
-            <ul class="Market Macbook_Pro">
-                <li class="Market_image"><img src="{% static 'img/Macbook_Pro.png' %}" alt="Macbook_Pro"></li>
-                <li class="Market_tittle">Makbook Pro</li>
-                <li class="Market_description">Power meets elegance in the MacBook Pro. Whether you’re a professional or a creative mind, this laptop delivers next-level performance, incredible battery life, and a breathtaking display. Work smarter, faster, and better!</li>
+            </li>
+        <li class="Market Macbook_Pro">            
+                <div class="Market_image"><img src="{% static 'img/Macbook_Pro.png' %}" alt="Macbook_Pro"></div>
+                <div class="Market_tittle">Makbook Pro</div>
+                <div class="Market_description">Power meets elegance in the MacBook Pro. Whether you’re a professional or a creative mind, this laptop delivers next-level performance, incredible battery life, and a breathtaking display. Work smarter, faster, and better!</div>
                 <a href="{% url 'product_id' pk=MacbookPro.pk %}">
-                    <li class="Market_purchase_section">                    
+                    <div class="Market_purchase_section">                    
                         <button class="Shop_now">Shop Now</button>                           
-                    </li>
+                    </div>
                 </a>
-            </ul></li>
+            </li>
     </ul>
 </div>
 
