@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h$39g+6o^q#bm6w9oe#361380#y#lb=x*6ywx=p(cmc%rmodth'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,12 +84,12 @@ WSGI_APPLICATION = 'diploma_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_store',
-        'USER': 'db_user',
-        'PASSWORD': 'mypass',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'cyber_app'),
+        'USER': os.getenv('DB_USER', 'db_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'Ve5d1UBtIKdp2LB6ltFq3iPhM6iFesZI'),
+        'HOST': os.getenv('DB_HOST', 'dpg-d01s29qdbo4c7392ti40-a.frankfurt-postgres.render.com'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
@@ -139,6 +140,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Путь к директории, где будут храниться загружаемые файлы
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
