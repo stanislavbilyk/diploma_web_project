@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.core.validators import MinValueValidator
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -82,7 +83,10 @@ class OS(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.ImageField(upload_to='products/')
+    image = models.ImageField(
+        upload_to='products/',
+        storage=MediaCloudinaryStorage()
+    )
     price = models.DecimalField(max_digits=10, decimal_places=0)
     discount_price = models.DecimalField(max_digits=10, decimal_places=0, null=True, blank=True)
     quantity_on_storage = models.IntegerField(validators=[MinValueValidator(0)])
