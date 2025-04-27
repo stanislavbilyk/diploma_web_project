@@ -49,7 +49,7 @@ class Brand(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='categories/', null=True, blank=True)
+    image = models.ImageField(upload_to='categories/', storage=MediaCloudinaryStorage(), null=True, blank=True)
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL, related_name='children')
     brands = models.ManyToManyField(Brand, blank=True)
