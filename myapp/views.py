@@ -298,7 +298,11 @@ class CartView(ListView):
     template_name = 'cart.html'
     model = Cart
     def get_context_data(self, **kwargs):
-        cart = get_object_or_404(Cart, user=self.request.user)
+        cart = Cart.objects.filter(user=self.request.user).first()
+        if not cart:
+            return {'success': False, 'error': 'Cart is empty'}
+
+        # cart = get_object_or_404(Cart, user=self.request.user)
         cart_items = CartItem.objects.filter(cart=cart).select_related('product')
 
         for item in cart_items:
